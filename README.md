@@ -2,7 +2,7 @@
 Just a library
 kinda wonky, but use it if you wanna
 
-# maven thingy
+# Maven thingy
 ```html
 <dependency>
     <groupId>com.gmail.kevin1050914</groupId>
