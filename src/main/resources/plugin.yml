@@ -1,0 +1,8 @@
+name: CommandLib
+version: '${project.version}'
+main: com.gmail.kevin1050914.commandlib.CMDLib
+api-version: 1.17
+prefix: CL
+load: STARTUP
+authors: [ Anthropoworphous ]
+description: Command library
