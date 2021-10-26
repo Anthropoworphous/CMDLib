@@ -1,6 +1,6 @@
 name: CommandLib
 version: '${project.version}'
-main: com.gmail.kevin1050914.commandlib.CMDLib
+main: com.github.anthropoworphous.commandlib.CMDLib
 api-version: 1.17
 prefix: CL
 load: STARTUP

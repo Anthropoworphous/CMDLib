@@ -1,6 +1,6 @@
-package com.gmail.kevin1050914.commandlib;
+package com.github.anthropoworphous.commandlib;
 
-import com.gmail.kevin1050914.commandlib.stuff.CMDExecutor;
+import com.github.anthropoworphous.commandlib.stuff.CMDExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class CMDLib extends JavaPlugin {

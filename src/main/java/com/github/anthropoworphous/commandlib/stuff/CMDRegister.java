@@ -1,6 +1,6 @@
-package com.gmail.kevin1050914.commandlib.stuff;
+package com.github.anthropoworphous.commandlib.stuff;
 
-import com.gmail.kevin1050914.commandlib.CMDLib;
+import com.github.anthropoworphous.commandlib.CMDLib;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;

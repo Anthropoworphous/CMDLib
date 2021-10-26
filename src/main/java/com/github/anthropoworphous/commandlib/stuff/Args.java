@@ -1,4 +1,4 @@
-package com.gmail.kevin1050914.commandlib.stuff;
+package com.github.anthropoworphous.commandlib.stuff;
 
 import java.util.List;
 
