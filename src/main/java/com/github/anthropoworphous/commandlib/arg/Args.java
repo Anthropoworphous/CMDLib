@@ -6,23 +6,24 @@ import java.util.List;
 public class Args {
     public Args(String[] reallyBadArgs, List<ArgsLimiter<?>> limiters) {
         badArgs = List.of(reallyBadArgs);
-
         this.limiters = limiters;
 
-        Iterator<ArgsLimiter<?>> it1 = limiters.iterator();
-        Iterator<String> it2 = badArgs.iterator();
-        while(it1.hasNext()) {
-            if (!it2.hasNext()) {
-                valid = false;
-                break;
-            }
+        if (limiters != null) {
+            Iterator<ArgsLimiter<?>> it1 = limiters.iterator();
+            Iterator<String> it2 = badArgs.iterator();
+            while (it1.hasNext()) {
+                if (!it2.hasNext()) {
+                    valid = false;
+                    break;
+                }
 
-            ArgsLimiter<?> limitor = it1.next();
-            String input = it2.next();
+                ArgsLimiter<?> limitor = it1.next();
+                String input = it2.next();
 
-            if (!limitor.validate(input)) {
-                valid = false;
-                break;
+                if (!limitor.validate(input)) {
+                    valid = false;
+                    break;
+                }
             }
         }
     }
