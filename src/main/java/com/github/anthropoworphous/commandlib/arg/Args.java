@@ -72,6 +72,6 @@ public class Args {
         return valid;
     }
     public int getSize() {
-        return badArgs.size();
+        return (badArgs != null) ? badArgs.size() : 0;
     }
 }

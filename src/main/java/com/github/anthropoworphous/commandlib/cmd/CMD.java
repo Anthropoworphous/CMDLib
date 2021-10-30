@@ -20,9 +20,16 @@ public abstract class CMD implements ICMD {
         StringBuilder sb = new StringBuilder();
         sb.append("/").append(this.cmdName());
         if (argLimiters() != null) {
-            argLimiters().forEach(param -> sb.append(" ").append(param.getExpectedType().getHumanReadableName()));
+            argLimiters().forEach(param -> {
+                if (param != null) {
+                    sb.append(" ").append(param.getExpectedType().getHumanReadableName());
+                } else {
+                    sb.append(" ").append("<Unknown>");
+                }
+            });
             int index = 0;
             for (ArgsLimiter<?> argLimitor : argLimiters()) {
+                if (argLimitor == null) { continue; }
                 index++;
                 sb.append("\n  - §aArg ").append(index)
                         .append("§r: §d")
