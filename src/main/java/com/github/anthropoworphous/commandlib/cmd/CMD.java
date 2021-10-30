@@ -6,11 +6,6 @@ import java.util.List;
 
 public abstract class CMD implements ICMD {
     @Override
-    public List<ArgsLimiter<?>> argLimiters() {
-        return null;
-    }
-
-    @Override
     public String cmdDescription() {
         return this.cmdName();
     }

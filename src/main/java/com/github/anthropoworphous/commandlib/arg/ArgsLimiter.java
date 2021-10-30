@@ -1,5 +1,6 @@
 package com.github.anthropoworphous.commandlib.arg;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -7,17 +8,17 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class ArgsLimiter<T> {
-    public ArgsLimiter(ArgsType expectedType, List<T> limits, boolean isWhiteList) {
+    public ArgsLimiter(@NotNull ArgsType expectedType, List<T> limits, boolean isWhiteList) {
         this.expectedType = expectedType;
         this.limits = limits;
         this.isWhiteList = isWhiteList;
     }
-    public ArgsLimiter(ArgsType expectedType, List<T> limits) {
+    public ArgsLimiter(@NotNull ArgsType expectedType, List<T> limits) {
         this.expectedType = expectedType;
         this.limits = limits;
         isWhiteList = true;
     }
-    public ArgsLimiter(ArgsType expectedType) {
+    public ArgsLimiter(@NotNull ArgsType expectedType) {
         this.expectedType = expectedType;
         this.limits = null;
         isWhiteList = true;
@@ -40,8 +41,7 @@ public class ArgsLimiter<T> {
         return isWhiteList;
     }
 
-    @Nullable public T getValue(String input) {
-        validate(input);
+    @NotNull public T getValue(String input) {
         return value;
     }
 
@@ -53,6 +53,15 @@ public class ArgsLimiter<T> {
     }
 
     public enum ArgsType {
+        OBJECT("<Object>",
+                "Ex: 1, e, True") {
+            @Override
+            @Nullable
+            @SuppressWarnings("unchecked")
+            public Object convert(String input) {
+                return input;
+            }
+        },
         STRING("<String>",
                 "Ex: abc, owo, stuff") {
             @Override

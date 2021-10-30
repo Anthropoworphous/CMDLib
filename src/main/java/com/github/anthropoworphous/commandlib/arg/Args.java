@@ -1,5 +1,7 @@
 package com.github.anthropoworphous.commandlib.arg;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,70 +11,58 @@ public class Args {
         badArgs = List.of(reallyBadArgs);
         this.limiters = limiters;
 
-        if (limiters != null) {
+        if (limiters == null && badArgs.size() == 0) { valid = true; }
+        else if (limiters == null) { invalidReason = "Too much arguments"; }
+        else if (limiters.size() != badArgs.size()) { invalidReason = "Not enough or too much arguments"; }
+        else {
             Iterator<ArgsLimiter<?>> it1 = limiters.iterator();
             Iterator<String> it2 = badArgs.iterator();
-            while (it1.hasNext()) {
-                if (!it2.hasNext()) {
-                    valid = false;
-                    break;
-                }
 
+            while (it1.hasNext()) {
                 ArgsLimiter<?> limiter = it1.next();
                 String input = it2.next();
 
                 if (limiter != null && !limiter.validate(input)) {
-                    valid = false;
-                    break;
+                    invalidReason = "Invalid input: " + input; return;
                 }
             }
+            valid = true;
         }
     }
 
     private final List<String> badArgs;
-    private boolean valid = true;
+    private boolean valid = false;
+    private String invalidReason;
     private final List<ArgsLimiter<?>> limiters;
 
     public boolean isValid() {
         return valid;
     }
+    public String invalidReason() {
+        return invalidReason;
+    }
     public int getSize() {
         return (badArgs != null) ? badArgs.size() : 0;
     }
 
-    public Object get(int index) {
-        if (valid && getSize() > index) {
-            if (limiters != null && limiters.size() > index) {
-                return (limiters.get(index) == null) ?
-                        badArgs.get(index) : limiters.get(index).getValue(badArgs.get(index));
-            } else {
-                return badArgs.get(index);
-            }
-        } else { return null; }
+    @NotNull public Object get(int index) {
+        return (limiters.get(index) == null) ?
+                badArgs.get(index) :
+                limiters.get(index).getValue(badArgs.get(index));
     }
-    public String getString(int index) {
-        if (valid && getSize() > index) {
-            return badArgs.get(index);
-        } else { return null; }
+    @NotNull public String getString(int index) {
+        return badArgs.get(index);
     }
-    public Integer getInt(int index) {
-        if (valid && getSize() > index && limiters.size() > index) {
-            return (Integer) limiters.get(index).getValue(badArgs.get(index));
-        } else { return null; }
+    public int getInt(int index) {
+        return (int) limiters.get(index).getValue(badArgs.get(index));
     }
-    public Double getDouble(int index) {
-        if (valid && getSize() > index && limiters.size() > index) {
-            return (Double) limiters.get(index).getValue(badArgs.get(index));
-        } else { return null; }
+    public double getDouble(int index) {
+        return (double) limiters.get(index).getValue(badArgs.get(index));
     }
-    public Float getFloat(int index) {
-        if (valid && getSize() > index && limiters.size() > index) {
-            return (Float) limiters.get(index).getValue(badArgs.get(index));
-        } else { return null; }
+    public float getFloat(int index) {
+        return (float) limiters.get(index).getValue(badArgs.get(index));
     }
-    public Boolean getBoolean(int index) {
-        if (valid && getSize() > index && limiters.size() > index) {
-            return (Boolean) limiters.get(index).getValue(badArgs.get(index));
-        } else { return null; }
+    public boolean getBoolean(int index) {
+        return (boolean) limiters.get(index).getValue(badArgs.get(index));
     }
 }
