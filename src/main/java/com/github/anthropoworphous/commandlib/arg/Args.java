@@ -17,10 +17,10 @@ public class Args {
                     break;
                 }
 
-                ArgsLimiter<?> limitor = it1.next();
+                ArgsLimiter<?> limiter = it1.next();
                 String input = it2.next();
 
-                if (!limitor.validate(input)) {
+                if (limiter != null && !limiter.validate(input)) {
                     valid = false;
                     break;
                 }
@@ -32,11 +32,19 @@ public class Args {
     private boolean valid = true;
     private final List<ArgsLimiter<?>> limiters;
 
+    public boolean isValid() {
+        return valid;
+    }
+    public int getSize() {
+        return (badArgs != null) ? badArgs.size() : 0;
+    }
+
     @SuppressWarnings("unchecked")
     public <T> T get(int index) {
         if (valid && getSize() > index) {
             if (limiters.size() > index) {
-                return (T) limiters.get(index).getValue(badArgs.get(index));
+                return (limiters.get(index) == null) ?
+                        (T) badArgs.get(index) : (T) limiters.get(index).getValue(badArgs.get(index));
             } else {
                 return (T) (badArgs.get(index));
             }
@@ -66,12 +74,5 @@ public class Args {
         if (valid && getSize() > index && limiters.size() > index) {
             return (Boolean) limiters.get(index).getValue(badArgs.get(index));
         } else { return null; }
-    }
-
-    public boolean isValid() {
-        return valid;
-    }
-    public int getSize() {
-        return (badArgs != null) ? badArgs.size() : 0;
     }
 }
