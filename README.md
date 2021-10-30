@@ -9,7 +9,7 @@ don't have a repo, slap the file in your local repo yourself
 <dependency>
     <groupId>com.github.anthropoworphous</groupId>
     <artifactId>CommandLib</artifactId>
-    <version>1.17-2.0.5</version>
+    <version>1.17-2.0.6</version>
     <scope>provided</scope>
 </dependency>
 ```

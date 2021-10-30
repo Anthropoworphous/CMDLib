@@ -42,7 +42,7 @@ public class Args {
 
     public Object get(int index) {
         if (valid && getSize() > index) {
-            if (limiters.size() > index) {
+            if (limiters != null && limiters.size() > index) {
                 return (limiters.get(index) == null) ?
                         badArgs.get(index) : limiters.get(index).getValue(badArgs.get(index));
             } else {
