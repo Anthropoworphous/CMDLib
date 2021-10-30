@@ -29,18 +29,23 @@ public abstract class CMD implements ICMD {
             });
             int index = 0;
             for (ArgsLimiter<?> argLimitor : argLimiters()) {
-                if (argLimitor == null) { continue; }
                 index++;
                 sb.append("\n  - §aArg ").append(index)
-                        .append("§r: §d")
-                        .append(argLimitor.getExpectedType().getHumanReadableName())
-                        .append("§r || §9")
-                        .append(argLimitor.getExpectedType().getgetHumanReadableDescription());
-                if (argLimitor.getLimit() != null) {
-                    sb.append("\n      - §cLimited!§r ")
-                            .append(argLimitor.isWhiteList() ? "WhiteList" : "§7BlackList§r");
-                    for (Object arg : argLimitor.getLimit()) {
-                        sb.append("\n          - ").append(arg);
+                        .append("§r: §d");
+                if (argLimitor == null) {
+                    sb.append("<Unknown>")
+                            .append("§r || §9")
+                            .append("This could be anything. Ex: 1, yes, false, Bukkit.getServer().stop()");
+                } else {
+                    sb.append(argLimitor.getExpectedType().getHumanReadableName())
+                            .append("§r || §9")
+                            .append(argLimitor.getExpectedType().getgetHumanReadableDescription());
+                    if (argLimitor.getLimit() != null) {
+                        sb.append("\n      - §cLimited!§r ")
+                                .append(argLimitor.isWhiteList() ? "WhiteList" : "§7BlackList§r");
+                        for (Object arg : argLimitor.getLimit()) {
+                            sb.append("\n          - ").append(arg);
+                        }
                     }
                 }
             }
