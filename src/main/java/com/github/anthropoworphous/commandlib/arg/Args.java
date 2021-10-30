@@ -3,6 +3,7 @@ package com.github.anthropoworphous.commandlib.arg;
 import java.util.Iterator;
 import java.util.List;
 
+@SuppressWarnings({"unused"})
 public class Args {
     public Args(String[] reallyBadArgs, List<ArgsLimiter<?>> limiters) {
         badArgs = List.of(reallyBadArgs);
@@ -39,14 +40,13 @@ public class Args {
         return (badArgs != null) ? badArgs.size() : 0;
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T get(int index) {
+    public Object get(int index) {
         if (valid && getSize() > index) {
             if (limiters.size() > index) {
                 return (limiters.get(index) == null) ?
-                        (T) badArgs.get(index) : (T) limiters.get(index).getValue(badArgs.get(index));
+                        badArgs.get(index) : limiters.get(index).getValue(badArgs.get(index));
             } else {
-                return (T) (badArgs.get(index));
+                return badArgs.get(index);
             }
         } else { return null; }
     }
