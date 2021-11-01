@@ -26,7 +26,6 @@ public class CMDConnector {
     private CMDConnector parent;
 
     public List<String> match(List<String> args, int lv) {
-        Bukkit.getConsoleSender().sendMessage("LV: " + lv + ", value: " + args.get(lv));
         if (args.size()-1 == lv) {
             return possibleArgs.stream()
                     .filter(arg -> arg.startsWith(args.get(lv)))
