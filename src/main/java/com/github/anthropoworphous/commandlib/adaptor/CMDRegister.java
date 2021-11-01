@@ -16,20 +16,22 @@ import java.util.Map;
 import java.util.Objects;
 
 public class CMDRegister {
-    private static final Map<String, ICMD> REGISTERED_CMDS = new HashMap<>();
+    private static final Map<String, ICMD> registeredCMD = new HashMap<>();
 
+    @SuppressWarnings("unused")
     public static void registerCMD(ICMD unregisteredICMD, JavaPlugin plugin) {
         PluginCommand cmd = Objects.requireNonNull(createCommand(unregisteredICMD.cmdName(), plugin));
         cmd.setDescription(unregisteredICMD.cmdDescription());
         cmd.setUsage(unregisteredICMD.cmdUsage());
         if (unregisteredICMD.cmdAliases() != null) { cmd.setAliases(unregisteredICMD.cmdAliases()); }
         if (unregisteredICMD.cmdReqPerm() != null) { cmd.setPermission(unregisteredICMD.cmdReqPerm()); }
-        REGISTERED_CMDS.put(unregisteredICMD.cmdName(), unregisteredICMD);
+        registeredCMD.put(unregisteredICMD.cmdName(), unregisteredICMD);
         Objects.requireNonNull(getCommandMap()).register(plugin.getName(), cmd);
         Objects.requireNonNull(plugin.getCommand(cmd.getName())).setExecutor(CMDLib.getExecutor());
+        Objects.requireNonNull(plugin.getCommand(cmd.getName())).setTabCompleter(new CMDCompleter());
     }
 
-    public static ICMD getCMD(String name) { return REGISTERED_CMDS.get(name); }
+    public static ICMD getCMD(String name) { return registeredCMD.get(name); }
 
 
 

@@ -1,10 +1,16 @@
 package com.github.anthropoworphous.commandlib.cmd;
 
+import com.github.anthropoworphous.commandlib.adaptor.CMDConnector;
 import com.github.anthropoworphous.commandlib.arg.ArgsLimiter;
 
 import java.util.List;
 
 public abstract class CMD implements ICMD {
+    @Override
+    public CMDConnector cmdConnector() {
+        return null;
+    }
+
     @Override
     public String cmdDescription() {
         return this.cmdName();
@@ -14,8 +20,8 @@ public abstract class CMD implements ICMD {
     public String cmdUsage() {
         StringBuilder sb = new StringBuilder();
         sb.append("/").append(this.cmdName());
-        if (argLimiters() != null) {
-            argLimiters().forEach(param -> {
+        if (argsLimiters() != null) {
+            argsLimiters().forEach(param -> {
                 if (param != null) {
                     sb.append(" ").append(param.getExpectedType().getHumanReadableName());
                 } else {
@@ -23,7 +29,7 @@ public abstract class CMD implements ICMD {
                 }
             });
             int index = 0;
-            for (ArgsLimiter<?> argLimitor : argLimiters()) {
+            for (ArgsLimiter<?> argLimitor : argsLimiters()) {
                 index++;
                 sb.append("\n  - §aArg ").append(index)
                         .append("§r: §d");

@@ -16,7 +16,7 @@ public class CMDExecutor implements CommandExecutor {
                              @NotNull String[] badArgs) {
         ICMD c = CMDRegister.getCMD(cmd.getName());
 
-        Args args = new Args(badArgs, c.argLimiters());
+        Args args = new Args(badArgs, c.argsLimiters());
 
         return (args.isValid()) ? c.execute(s, args) : false;
     }
