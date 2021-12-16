@@ -1,4 +1,4 @@
-package com.github.anthropoworphous.commandlib.adaptor;
+package com.github.anthropoworphous.commandlib.adaptor.processor;
 
 import com.github.anthropoworphous.commandlib.CMDLib;
 import com.github.anthropoworphous.commandlib.cmd.ICMD;
@@ -23,7 +23,9 @@ public class CMDRegister {
         PluginCommand cmd = Objects.requireNonNull(createCommand(unregisteredICMD.cmdName(), plugin));
         cmd.setDescription(unregisteredICMD.cmdDescription());
         cmd.setUsage(unregisteredICMD.cmdUsage());
-        if (unregisteredICMD.cmdAliases() != null) { cmd.setAliases(unregisteredICMD.cmdAliases()); }
+        if (unregisteredICMD.cmdAliases() != null) {
+            cmd.setAliases(Objects.requireNonNull(unregisteredICMD.cmdAliases()));
+        }
         if (unregisteredICMD.cmdReqPerm() != null) { cmd.setPermission(unregisteredICMD.cmdReqPerm()); }
         registeredCMD.put(unregisteredICMD.cmdName(), unregisteredICMD);
         Objects.requireNonNull(getCommandMap()).register(plugin.getName(), cmd);

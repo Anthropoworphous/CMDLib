@@ -1,13 +1,15 @@
 package com.github.anthropoworphous.commandlib.cmd;
 
-import com.github.anthropoworphous.commandlib.adaptor.CMDConnector;
-import com.github.anthropoworphous.commandlib.arg.ArgsLimiter;
+import com.github.anthropoworphous.commandlib.adaptor.CMDSupplier;
+import main.structure.Connected;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public abstract class CMD implements ICMD {
     @Override
-    public CMDConnector cmdConnector() {
+    public @Nullable List<Connected<CMDSupplier>> cmdConnector() {
         return null;
     }
 
@@ -18,6 +20,7 @@ public abstract class CMD implements ICMD {
 
     @Override
     public String cmdUsage() {
+        /*
         StringBuilder sb = new StringBuilder();
         sb.append("/").append(this.cmdName());
         if (argsLimiters() != null) {
@@ -52,6 +55,8 @@ public abstract class CMD implements ICMD {
             }
         }
         return sb.toString();
+         */
+        return "wip";
     }
 
     @Override

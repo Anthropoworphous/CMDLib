@@ -6,7 +6,7 @@
 
     <groupId>com.github.anthropoworphous</groupId>
     <artifactId>CommandLib</artifactId>
-    <version>1.17-3.0.0</version>
+    <version>3.1.0</version>
     <packaging>jar</packaging>
 
     <name>CommandLib</name>
@@ -27,6 +27,26 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>io.papermc.paper:paper-api</exclude>
+                                </excludes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <resources>
@@ -54,6 +74,12 @@
             <artifactId>paper-api</artifactId>
             <version>1.17.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.anthropoworphous</groupId>
+            <artifactId>OWOToolkit</artifactId>
+            <version>1</version>
         </dependency>
     </dependencies>
 </project>
