@@ -2,8 +2,8 @@ package com.github.anthropoworphous.commandlib.adaptor;
 
 import com.github.anthropoworphous.commandlib.arg.ArgsType;
 import main.structure.Connected;
-import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,8 +20,9 @@ public class CMDSupplier {
         this.possibleArgs = possibleArgs.stream().map(argsType::argTypeToString).collect(Collectors.toList());
     }
 
-    public static Connected<CMDSupplier> newRoot(@NotNull ArgsType argsType, List<?> possibleArgs) {
-        return new Connected<>(new CMDSupplier(argsType, possibleArgs));
+    public static Connected<CMDSupplier> newRoot() {
+        //argsType doesn't matter, root is not evaluated, this is just used to hold data
+        return new Connected<>(new CMDSupplier(ArgsType.STRING, Collections.emptyList()));
     }
 
     private final List<String> possibleArgs;

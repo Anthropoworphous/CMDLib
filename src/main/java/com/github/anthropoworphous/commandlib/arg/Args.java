@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings({"unused"})
 public class Args {
-    public Args(String[] reallyBadArgs, Collection<Connected<CMDLimiter<?>>> limiter) {
+    public Args(String[] reallyBadArgs, List<Connected<CMDLimiter<?>>> limiter) {
         badArgs = List.of(reallyBadArgs);
 
         if (limiter == null && badArgs.size() == 0) { valid = true; }

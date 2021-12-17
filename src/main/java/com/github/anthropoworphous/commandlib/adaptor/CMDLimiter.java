@@ -14,8 +14,9 @@ public class CMDLimiter<T> {
     public CMDLimiter(@NotNull ArgsType expectedType) {
         this.expectedType = expectedType;
     }
-    public static Connected<CMDLimiter<?>> newRoot(@NotNull ArgsType expectedType) {
-        return new Connected<>(new CMDLimiter<>(expectedType));
+    public static Connected<CMDLimiter<?>> newRoot() {
+        //argsType doesn't matter, root is not evaluated, this is just used to hold data
+        return new Connected<>(new CMDLimiter<>(ArgsType.STRING));
     }
 
     private T value;

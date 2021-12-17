@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface ICMD {
@@ -26,8 +25,8 @@ public interface ICMD {
      * Limit and shape the argmument
      * @return The limiters to use
      */
-    @Nullable Collection<Connected<CMDLimiter<?>>> cmdLimiter();
-    @Nullable Collection<Connected<CMDSupplier>> cmdConnector();
+    @Nullable List<Connected<CMDLimiter<?>>> cmdLimiter();
+    @Nullable List<Connected<CMDSupplier>> cmdConnector();
     @NotNull String cmdName();
     String cmdDescription();
     String cmdUsage();
