@@ -1,9 +1,7 @@
 package com.github.anthropoworphous.commandlib.cmd;
 
-import com.github.anthropoworphous.commandlib.adaptor.CMDLimiter;
 import com.github.anthropoworphous.commandlib.arg.Args;
-import com.github.anthropoworphous.commandlib.adaptor.CMDSupplier;
-import main.structure.Connected;
+import main.structure.tree.Connected;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,8 +23,7 @@ public interface ICMD {
      * Limit and shape the argmument
      * @return The limiters to use
      */
-    @Nullable List<Connected<CMDLimiter<?>>> cmdLimiter();
-    @Nullable List<Connected<CMDSupplier>> cmdConnector();
+    @Nullable List<Connected> cmdLimiter();
     @NotNull String cmdName();
     String cmdDescription();
     String cmdUsage();

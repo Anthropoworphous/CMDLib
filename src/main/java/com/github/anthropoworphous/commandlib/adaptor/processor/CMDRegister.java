@@ -2,11 +2,13 @@ package com.github.anthropoworphous.commandlib.adaptor.processor;
 
 import com.github.anthropoworphous.commandlib.CMDLib;
 import com.github.anthropoworphous.commandlib.cmd.ICMD;
+import com.github.anthropoworphous.commandlib.cmd.annotation.Command;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -14,9 +16,32 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 public class CMDRegister {
     private static final Map<String, ICMD> registeredCMD = new HashMap<>();
+
+    public static void registerCMD(JavaPlugin plugin, String packagePath) {
+        CMDLib.getlogger().info("Registering by package: searching package " + packagePath);
+
+        Reflections reflections = new Reflections(packagePath);
+        Set<Class<?>> cmdClasses = reflections.getTypesAnnotatedWith(Command.class);
+        cmdClasses.forEach(c -> {
+            CMDLib.getlogger().info("-\tFound class: " + c.toString());
+
+            Object inst = null;
+            try {
+                inst = c.getConstructors()[0].newInstance();
+            } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            if (inst instanceof ICMD) {
+                CMDLib.getlogger().info("-\t" + c + " is a command, registering...");
+
+                registerCMD((ICMD) inst, plugin);
+            }
+        });
+    }
 
     @SuppressWarnings("unused")
     public static void registerCMD(ICMD unregisteredICMD, JavaPlugin plugin) {
@@ -31,6 +56,8 @@ public class CMDRegister {
         Objects.requireNonNull(getCommandMap()).register(plugin.getName(), cmd);
         Objects.requireNonNull(plugin.getCommand(cmd.getName())).setExecutor(CMDLib.getExecutor());
         Objects.requireNonNull(plugin.getCommand(cmd.getName())).setTabCompleter(new CMDCompleter());
+
+        CMDLib.getlogger().info("Command " + unregisteredICMD.cmdName() + " registered");
     }
 
     public static ICMD getCMD(String name) { return registeredCMD.get(name); }

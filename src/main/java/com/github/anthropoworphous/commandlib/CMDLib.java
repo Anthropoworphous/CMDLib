@@ -1,13 +1,17 @@
 package com.github.anthropoworphous.commandlib;
 
 import com.github.anthropoworphous.commandlib.adaptor.processor.CMDExecutor;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.logging.Logger;
 
 public final class CMDLib extends JavaPlugin {
 
     private static CMDExecutor executor;
-
     public static CMDExecutor getExecutor() { return executor; }
+
+    public static Logger getlogger() { return Bukkit.getLogger(); }
 
     @Override
     public void onEnable() {

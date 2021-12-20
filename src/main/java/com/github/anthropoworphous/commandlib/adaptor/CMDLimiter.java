@@ -1,29 +1,46 @@
 package com.github.anthropoworphous.commandlib.adaptor;
 
 import com.github.anthropoworphous.commandlib.arg.ArgsType;
-import main.structure.Connected;
+import main.structure.tree.Connected;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
-public class CMDLimiter<T> {
+public class CMDLimiter<T> implements Connected.IConnectable {
+    /**
+     * @param expectedType The expected type of this limiter
+     * @param autoFill these will be used for command auto fill
+     */
+    public CMDLimiter(@NotNull ArgsType expectedType, String... autoFill) {
+        this.expectedType = expectedType;
+        Arrays.stream(autoFill).forEach(this::addAutoFill);
+    }
+    /**
+     * @param expectedType The expected type of this limiter
+     * @param autoFill these will be used for command auto fill
+     */
+    public CMDLimiter(@NotNull ArgsType expectedType, List<String> autoFill) {
+        this.expectedType = expectedType;
+        autoFill.forEach(this::addAutoFill);
+    }
+    /**
+     * @param expectedType The expected type of this limiter
+     */
     public CMDLimiter(@NotNull ArgsType expectedType) {
         this.expectedType = expectedType;
     }
-    public static Connected<CMDLimiter<?>> newRoot() {
-        //argsType doesn't matter, root is not evaluated, this is just used to hold data
-        return new Connected<>(new CMDLimiter<>(ArgsType.STRING));
-    }
 
+    //auto complete
     private T value;
     private final ArgsType expectedType;
+    private final List<Supplier<List<String>>> autoFill = new ArrayList<>();
     private boolean isWhiteList = true;
     private final List<T> limits = new ArrayList<>();
-    private final List<Function<String, Boolean>> checks = new ArrayList<>();
+    private final List<Function<T, Boolean>> checks = new ArrayList<>();
 
     /**
      * make sure the user input fit the limits
@@ -34,14 +51,19 @@ public class CMDLimiter<T> {
         value = expectedType.stringToArgType(input);
         return (input != null
                 && value != null
-                && checks.stream().allMatch(function -> function.apply(input))
+                && checks.stream().allMatch(function -> function.apply(value))
                 && limits.contains(value) == isWhiteList);
     }
 
     public CMDLimiter<T> whitelist(boolean bool) { this.isWhiteList = bool; return this; }
     public CMDLimiter<T> addLimits(T limit) { limits.add(limit); return this; }
     public CMDLimiter<T> addLimits(Collection<T> limit) { limits.addAll(limit); return this; }
-    public CMDLimiter<T> addChecks(Function<String, Boolean> check) { this.checks.add(check); return this; }
+    public CMDLimiter<T> addChecks(Function<T, Boolean> check) { this.checks.add(check); return this; }
+    public CMDLimiter<T> addAutoFill(String fillWith) { this.autoFill.add(() ->
+            Collections.singletonList(fillWith)); return this; }
+    public CMDLimiter<T> addAutoFill(Supplier<List<String>> fillWith) { this.autoFill.add(fillWith); return this; }
+    public CMDLimiter<T> addAutoFillSingle(Supplier<String> fillWith) { this.autoFill.add(() ->
+            Collections.singletonList(fillWith.get())); return this; }
 
     public ArgsType getExpectedType() {
         return expectedType;
@@ -51,6 +73,10 @@ public class CMDLimiter<T> {
     }
     public boolean isWhiteList() {
         return isWhiteList;
+    }
+    public List<String> getAutoFill() { return autoFill.stream()
+            .flatMap(f -> f.get().stream().filter(this::validate))
+            .collect(Collectors.toList());
     }
 
     @NotNull public T getValue(String input) {
