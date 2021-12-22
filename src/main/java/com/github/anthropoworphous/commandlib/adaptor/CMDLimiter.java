@@ -1,6 +1,6 @@
 package com.github.anthropoworphous.commandlib.adaptor;
 
-import com.github.anthropoworphous.commandlib.arg.ArgsType;
+import com.github.anthropoworphous.commandlib.arg.BaseTypes;
 import main.structure.tree.Connected;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +15,7 @@ public class CMDLimiter<T> implements Connected.IConnectable {
      * @param expectedType The expected type of this limiter
      * @param autoFill these will be used for command auto fill
      */
-    public CMDLimiter(@NotNull ArgsType expectedType, String... autoFill) {
+    public CMDLimiter(@NotNull BaseTypes expectedType, String... autoFill) {
         this.expectedType = expectedType;
         Arrays.stream(autoFill).forEach(this::addAutoFill);
     }
@@ -23,20 +23,20 @@ public class CMDLimiter<T> implements Connected.IConnectable {
      * @param expectedType The expected type of this limiter
      * @param autoFill these will be used for command auto fill
      */
-    public CMDLimiter(@NotNull ArgsType expectedType, List<String> autoFill) {
+    public CMDLimiter(@NotNull BaseTypes expectedType, List<String> autoFill) {
         this.expectedType = expectedType;
         autoFill.forEach(this::addAutoFill);
     }
     /**
      * @param expectedType The expected type of this limiter
      */
-    public CMDLimiter(@NotNull ArgsType expectedType) {
+    public CMDLimiter(@NotNull BaseTypes expectedType) {
         this.expectedType = expectedType;
     }
 
     //auto complete
     private T value;
-    private final ArgsType expectedType;
+    private final BaseTypes expectedType;
     private final List<Supplier<List<String>>> autoFill = new ArrayList<>();
     private boolean isWhiteList = true;
     private final List<T> limits = new ArrayList<>();
@@ -62,10 +62,12 @@ public class CMDLimiter<T> implements Connected.IConnectable {
     public CMDLimiter<T> addAutoFill(String fillWith) { this.autoFill.add(() ->
             Collections.singletonList(fillWith)); return this; }
     public CMDLimiter<T> addAutoFill(Supplier<List<String>> fillWith) { this.autoFill.add(fillWith); return this; }
-    public CMDLimiter<T> addAutoFillSingle(Supplier<String> fillWith) { this.autoFill.add(() ->
-            Collections.singletonList(fillWith.get())); return this; }
+    public CMDLimiter<T> addAutoFillSingle(Supplier<String> fillWith) {
+        this.autoFill.add(() -> Collections.singletonList(fillWith.get()));
+        return this;
+    }
 
-    public ArgsType getExpectedType() {
+    public BaseTypes getExpectedType() {
         return expectedType;
     }
     public List<T> getLimit() {

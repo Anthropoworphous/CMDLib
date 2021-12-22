@@ -50,7 +50,7 @@ public class Args {
                                 .map(limit -> fillWith.getExpectedType().argTypeToString(limit))
                                 .collect(Collectors.toList()));
                     } else {
-                        autoFill.add(fillWith.getExpectedType().getHumanReadableName());
+                        autoFill.add(fillWith.getExpectedType().getReadableName());
                     }
                 } else {
                     autoFill.add("<Unknown>");
