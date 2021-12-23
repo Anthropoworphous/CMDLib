@@ -1,8 +1,8 @@
 package com.github.anthropoworphous.commandlib.arg;
 
+import com.github.anthropoworphous.commandlib.CMDLib;
 import com.github.anthropoworphous.commandlib.adaptor.CMDLimiter;
 import main.structure.tree.Connected;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,13 @@ public class Args {
      * @param currentInputs user input
      */
     public Args(List<Connected> limiters, String[] currentInputs) {
+
+        if (CMDLib.logDetails()) {
+            CMDLib.log("Checking argument" + ((currentInputs.length == 1) ? " " : "s ")
+                    + "for autocomplete"
+            );
+        }
+
         badArgs = List.of(currentInputs);
         if (limiters != null && limiters.size() != 0 && limiters.stream().allMatch(l -> l.getChild() != null)) {
             List<Function<Connected.IConnectable, Boolean>> filters = new ArrayList<>();
@@ -29,34 +36,82 @@ public class Args {
                         .forEach(arg -> filters.add(connectable -> ((CMDLimiter<?>) connectable).validate(arg)));
             }
 
-            for (Connected connected : ((badArgs.size() > 1) ?
-                    limiters.stream()
-                            .flatMap(l -> l.multiLayerFilter(filters, false).stream()
-                                    .filter(ll -> !ll.isChildless())
-                                    .flatMap(ll -> Objects.requireNonNull(ll.getChild()).stream())
-                                    .collect(Collectors.toList()).stream())
-                            .collect(Collectors.toList()) :
-                    limiters.stream()
-                            .flatMap(l -> Objects.requireNonNull(l.getChild()).stream())
-                            .collect(Collectors.toList()))) {
+            List<Connected> filtered = new ArrayList<>();
+            List<Connected> filtered_ish;
+            for (Connected connected : limiters) {
+                if (badArgs.size() > 1) {
+                    filtered_ish = connected.multiLayerFilter(filters, false);
+
+                    if (CMDLib.logDetails()) {
+                        CMDLib.log("-\tFiltering route: " + connected);
+                    }
+
+                    for (Connected f : filtered_ish) {
+                        if (f.isChildless()) {
+
+                            if (CMDLib.logDetails()) {
+                                CMDLib.log("-\tRoute removed for it has no following argument for completion: "
+                                        + f);
+                            }
+
+                        } else {
+                            filtered.addAll(Objects.requireNonNull(f.getChild()));
+                        }
+                    }
+                } else {
+                    filtered.addAll(Objects.requireNonNull(connected.getChild()));
+
+                    if (CMDLib.logDetails()) {
+                        CMDLib.log("-\tToo short for filtering, added child of: " + connected);
+                    }
+
+                }
+            }
+
+            for (Connected connected : filtered) {
                 CMDLimiter<?> fillWith = (CMDLimiter<?>) connected.getValue();
 
                 if (fillWith != null) {
                     if (fillWith.getAutoFill().size() != 0) {
+
+                        if (CMDLib.logDetails()) {
+                            CMDLib.log("-\tAutoFill found, using it for AutoComplete");
+                        }
+
                         autoFill.addAll(fillWith.getAutoFill());
                     } else if (fillWith.getLimit().size() > 0) {
+
+                        if (CMDLib.logDetails()) {
+                            CMDLib.log("-\tLimits found, using it for AutoComplete");
+                        }
+
                         autoFill.addAll(fillWith.getLimit()
                                 .stream()
                                 .map(limit -> fillWith.getExpectedType().argTypeToString(limit))
                                 .collect(Collectors.toList()));
                     } else {
+
+                        if (CMDLib.logDetails()) {
+                            CMDLib.log("-\tCould not find anything for autofill, using type name instead");
+                        }
+
                         autoFill.add(fillWith.getExpectedType().getReadableName());
                     }
                 } else {
+
+                    if (CMDLib.logDetails()) {
+                        CMDLib.log("-\tType not found...how?");
+                    }
+
                     autoFill.add("<Unknown>");
                 }
             }
             if (badArgs.size() > 0) {
+
+                if (CMDLib.logDetails()) {
+                    CMDLib.log("-Enough argument for final incomplete argument filter, filtering");
+                }
+
                 autoFill.removeIf(str -> !str.contains(badArgs.get(badArgs.size()-1)));
             }
         }
@@ -68,6 +123,13 @@ public class Args {
      * @param limiters command limit
      */
     public Args(String[] reallyBadArgs, List<Connected> limiters) {
+
+        if (CMDLib.logDetails()) {
+            CMDLib.log("Checking argument" + ((reallyBadArgs.length == 1) ? " " : "s ")
+                    + "for execution"
+            );
+        }
+
         badArgs = List.of(reallyBadArgs);
         //Check for availability
         //no limit = do not accept args
@@ -124,16 +186,35 @@ public class Args {
     public int getSize() {
         return (badArgs != null) ? badArgs.size() : 0;
     }
+    public BaseTypes getType(int index) {
+        return limiter.get(index).getExpectedType();
+    }
+
+    public <T> T get(Class<T> type, int index) {
+        return limiter.get(index).getExpectedType().stringToArgType(badArgs.get(index));
+    }
 
     /**
-     * Try to avoid this if possible...why would you need this anyway
+     * This is just getObject(), there is no difference
+     * @param index is just index
+     * @return object of this index
      */
-    @NotNull public Object get(int index) {
+    public Object get(int index) {
+        return getObject(index);
+    }
+
+    /**
+     * This return object
+     * If there was no limiter it'll just return the string in object form
+     * @param index is just index
+     * @return object of this index
+     */
+    public Object getObject(int index) {
         return (limiter.get(index) == null) ?
                 badArgs.get(index) :
                 limiter.get(index).getValue(badArgs.get(index));
     }
-    @NotNull public String getString(int index) {
+    public String getString(int index) {
         return badArgs.get(index);
     }
     public int getInt(int index) {

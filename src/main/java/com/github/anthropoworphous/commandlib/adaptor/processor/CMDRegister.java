@@ -22,12 +22,12 @@ public class CMDRegister {
     private static final Map<String, ICMD> registeredCMD = new HashMap<>();
 
     public static void registerCMD(JavaPlugin plugin, String packagePath) {
-        CMDLib.getlogger().info("Registering by package: searching package " + packagePath);
+        CMDLib.log("Registering by package: searching package " + packagePath);
 
         Reflections reflections = new Reflections(packagePath);
         Set<Class<?>> cmdClasses = reflections.getTypesAnnotatedWith(Command.class);
         cmdClasses.forEach(c -> {
-            CMDLib.getlogger().info("-\tFound class: " + c.toString());
+            CMDLib.log("-\tFound class: " + c.toString());
 
             Object inst = null;
             try {
@@ -36,7 +36,7 @@ public class CMDRegister {
                 e.printStackTrace();
             }
             if (inst instanceof ICMD) {
-                CMDLib.getlogger().info("-\t" + c + " is a command, registering...");
+                CMDLib.log("-\t" + c + " is a command, registering...");
 
                 registerCMD((ICMD) inst, plugin);
             }
@@ -57,7 +57,7 @@ public class CMDRegister {
         Objects.requireNonNull(plugin.getCommand(cmd.getName())).setExecutor(CMDLib.getExecutor());
         Objects.requireNonNull(plugin.getCommand(cmd.getName())).setTabCompleter(new CMDCompleter());
 
-        CMDLib.getlogger().info("Command " + unregisteredICMD.cmdName() + " registered");
+        CMDLib.log("Command " + unregisteredICMD.cmdName() + " registered");
     }
 
     public static ICMD getCMD(String name) { return registeredCMD.get(name); }

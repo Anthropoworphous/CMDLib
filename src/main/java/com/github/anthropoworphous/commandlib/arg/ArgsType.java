@@ -9,4 +9,5 @@ public interface ArgsType {
 
     @Nullable <T> T stringToArgType(String input);
     @NotNull String argTypeToString(Object input);
+    @NotNull Class<?> returnType();
 }

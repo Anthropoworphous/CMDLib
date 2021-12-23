@@ -1,5 +1,6 @@
 package com.github.anthropoworphous.commandlib.adaptor.processor;
 
+import com.github.anthropoworphous.commandlib.CMDLib;
 import com.github.anthropoworphous.commandlib.arg.Args;
 import com.github.anthropoworphous.commandlib.cmd.ICMD;
 import org.bukkit.command.Command;
@@ -16,7 +17,24 @@ public class CMDExecutor implements CommandExecutor {
                              @NotNull String[] badArgs) {
         ICMD c = CMDRegister.getCMD(cmd.getName());
 
+        if (CMDLib.logDetails()) {
+            CMDLib.log("Command called: /" + cmd.getName()
+                    + ((badArgs.length == 0) ?
+                    " without arguments" :
+                    "with argument" + ((badArgs.length == 1) ?
+                            " " :
+                            "s "))
+                    + String.join(", ", badArgs));
+        }
+
         Args args = new Args(badArgs, c.cmdLimiter());
+
+        if (CMDLib.logDetails()) {
+            CMDLib.log("Argument " + ((badArgs.length == 1) ? " " : "s ")
+                    + "is " + ((args.isValid() ?
+                    "valid" :
+                    "invalid, because: " + args.invalidReason())));
+        }
 
         return (args.isValid()) ? c.execute(s, args) : false;
     }

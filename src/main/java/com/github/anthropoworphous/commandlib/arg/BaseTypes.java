@@ -28,8 +28,14 @@ public enum BaseTypes implements ArgsType {
 
         @Override
         @SuppressWarnings("unchecked")
-        @NotNull CMDLimiter<Object> constructLimiter() {
+        @NotNull
+        public CMDLimiter<Object> constructLimiter() {
             return new CMDLimiter<>(this);
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return Object.class;
         }
     },
     STRING("<String>",
@@ -43,8 +49,14 @@ public enum BaseTypes implements ArgsType {
 
         @Override
         @SuppressWarnings("unchecked")
-        @NotNull CMDLimiter<String> constructLimiter() {
+        @NotNull
+        public CMDLimiter<String> constructLimiter() {
             return new CMDLimiter<>(this);
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return String.class;
         }
     },
     INT("<Integer>",
@@ -66,8 +78,14 @@ public enum BaseTypes implements ArgsType {
 
         @Override
         @SuppressWarnings("unchecked")
-        @NotNull CMDLimiter<Integer> constructLimiter() {
+        @NotNull
+        public CMDLimiter<Integer> constructLimiter() {
             return new CMDLimiter<>(this);
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return Integer.class;
         }
     },
     DOUBLE("<Double>",
@@ -89,8 +107,14 @@ public enum BaseTypes implements ArgsType {
 
         @Override
         @SuppressWarnings("unchecked")
-        @NotNull CMDLimiter<Double> constructLimiter() {
+        @NotNull
+        public CMDLimiter<Double> constructLimiter() {
             return new CMDLimiter<>(this);
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return Double.class;
         }
     },
     FLOAT("<Float>",
@@ -112,8 +136,14 @@ public enum BaseTypes implements ArgsType {
 
         @Override
         @SuppressWarnings("unchecked")
-        @NotNull CMDLimiter<Float> constructLimiter() {
+        @NotNull
+        public CMDLimiter<Float> constructLimiter() {
             return new CMDLimiter<>(this);
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return Float.class;
         }
     },
     LONG("<Long>",
@@ -135,8 +165,14 @@ public enum BaseTypes implements ArgsType {
 
         @Override
         @SuppressWarnings("unchecked")
-        @NotNull CMDLimiter<Long> constructLimiter() {
+        @NotNull
+        public CMDLimiter<Long> constructLimiter() {
             return new CMDLimiter<>(this);
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return Long.class;
         }
     },
     BOOLEAN("<Boolean>",
@@ -158,9 +194,15 @@ public enum BaseTypes implements ArgsType {
 
         @Override
         @SuppressWarnings("unchecked")
-        @NotNull CMDLimiter<Boolean> constructLimiter() {
+        @NotNull
+        public CMDLimiter<Boolean> constructLimiter() {
             return new CMDLimiter<Boolean>(this)
                     .addAutoFill(() -> List.of("true", "false"));
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return Boolean.class;
         }
     },
     PLAYER("<Player>",
@@ -179,11 +221,17 @@ public enum BaseTypes implements ArgsType {
 
         @Override
         @SuppressWarnings("unchecked")
-        @NotNull CMDLimiter<Player> constructLimiter() {
+        @NotNull
+        public CMDLimiter<Player> constructLimiter() {
             return new CMDLimiter<Player>(this)
                     .addAutoFill(() -> Bukkit.getOnlinePlayers().stream()
                     .map(Player::getName)
                     .collect(Collectors.toList()));
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return Player.class;
         }
     },
     WORLD("<World>",
@@ -202,11 +250,17 @@ public enum BaseTypes implements ArgsType {
 
         @Override
         @SuppressWarnings("unchecked")
-        @NotNull CMDLimiter<World> constructLimiter() {
+        @NotNull
+        public CMDLimiter<World> constructLimiter() {
             return new CMDLimiter<World>(this)
                     .addAutoFill(() -> (Bukkit.getWorlds().stream()
                             .map(World::getName)
                             .collect(Collectors.toList())));
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return World.class;
         }
     },
     TIME("<Time>",
@@ -268,8 +322,14 @@ public enum BaseTypes implements ArgsType {
          */
         @Override
         @SuppressWarnings("unchecked")
-        @NotNull CMDLimiter<Double> constructLimiter() {
+        @NotNull
+        public CMDLimiter<Double> constructLimiter() {
             return new CMDLimiter<>(this);
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return Double.class;
         }
     },
     ATTRIBUTE("<Attribute>",
@@ -291,11 +351,17 @@ public enum BaseTypes implements ArgsType {
 
         @Override
         @SuppressWarnings("unchecked")
-        @NotNull CMDLimiter<Attribute> constructLimiter() {
+        @NotNull
+        public CMDLimiter<Attribute> constructLimiter() {
             return new CMDLimiter<Attribute>(this)
                     .addAutoFill(() -> Stream.of(Attribute.values())
                             .map(attribute -> attribute.name().toLowerCase())
                             .collect(Collectors.toList()));
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return Attribute.class;
         }
     },
     BIOME("<Biome>",
@@ -317,11 +383,17 @@ public enum BaseTypes implements ArgsType {
 
         @Override
         @SuppressWarnings("unchecked")
-        @NotNull CMDLimiter<Biome> constructLimiter() {
+        @NotNull
+        public CMDLimiter<Biome> constructLimiter() {
             return new CMDLimiter<Biome>(this)
                     .addAutoFill(() -> Stream.of(Biome.values())
                             .map(biome -> biome.name().toLowerCase())
                             .collect(Collectors.toList()));
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return Biome.class;
         }
     },
     DIRECTION("<Direction>",
@@ -343,11 +415,17 @@ public enum BaseTypes implements ArgsType {
 
         @Override
         @SuppressWarnings("unchecked")
-        @NotNull CMDLimiter<BlockFace> constructLimiter() {
+        @NotNull
+        public CMDLimiter<BlockFace> constructLimiter() {
             return new CMDLimiter<BlockFace>(this)
                     .addAutoFill(() -> Stream.of(BlockFace.values())
                             .map(face -> face.name().toLowerCase())
                             .collect(Collectors.toList()));
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return BlockFace.class;
         }
     };
 
@@ -359,7 +437,8 @@ public enum BaseTypes implements ArgsType {
     private final String readableName;
     private final String readableDescription;
 
-    @NotNull abstract <T> CMDLimiter<T> constructLimiter();
+    @NotNull
+    public abstract <T> CMDLimiter<T> constructLimiter();
 
     @Override
     public String getReadableName() {
@@ -371,5 +450,6 @@ public enum BaseTypes implements ArgsType {
     }
 
     @Override
-    @NotNull public String argTypeToString(Object input) { return String.valueOf(input); }
+    @NotNull
+    public String argTypeToString(Object input) { return String.valueOf(input); }
 }

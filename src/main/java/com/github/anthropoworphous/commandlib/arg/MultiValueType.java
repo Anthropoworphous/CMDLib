@@ -57,6 +57,11 @@ public enum MultiValueType implements ArgsType {
                     BaseTypes.DOUBLE.constructLimiter() //z
             );
         }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return Vector.class;
+        }
     },
     LOCATION_NO_ANGLE("<Location>",
             "world + 3 number like: world_the_end 69 1 420") {
@@ -115,6 +120,11 @@ public enum MultiValueType implements ArgsType {
                     BaseTypes.DOUBLE.constructLimiter(), //y
                     BaseTypes.DOUBLE.constructLimiter() //z
             );
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return Location.class;
         }
     },
     LOCATION_WITH_ANGLE("<Location+Angle>",
@@ -178,6 +188,11 @@ public enum MultiValueType implements ArgsType {
                     BaseTypes.DOUBLE.constructLimiter(), //yaw
                     BaseTypes.DOUBLE.constructLimiter() //pitch
             );
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return Location.class;
         }
     };
 

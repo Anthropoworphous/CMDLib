@@ -1,5 +1,6 @@
 package com.github.anthropoworphous.commandlib.adaptor;
 
+import com.github.anthropoworphous.commandlib.CMDLib;
 import com.github.anthropoworphous.commandlib.arg.BaseTypes;
 import main.structure.tree.Connected;
 import org.jetbrains.annotations.NotNull;
@@ -49,10 +50,33 @@ public class CMDLimiter<T> implements Connected.IConnectable {
      */
     public boolean validate(String input) {
         value = expectedType.stringToArgType(input);
-        return (input != null
-                && value != null
-                && checks.stream().allMatch(function -> function.apply(value))
-                && limits.contains(value) == isWhiteList);
+
+        if (CMDLib.logDetails()) {
+            CMDLib.log("-Validating " + input);
+        }
+
+        if (input == null) {
+            if (CMDLib.logDetails()) {
+                CMDLib.log("-\tNull input...");
+            }
+        } else if (value == null) {
+            if (CMDLib.logDetails()) {
+                CMDLib.log("-\tCould not pharse input to " + expectedType.getReadableName());
+            }
+        } else if (!checks.stream().allMatch(function -> function.apply(value))) {
+            if (CMDLib.logDetails()) {
+                CMDLib.log("-\tInput didn't pass all the checks");
+            }
+        } else if (limits.size() != 0 && limits.contains(value) != isWhiteList) {
+            if (CMDLib.logDetails()) {
+                CMDLib.log("-\tInput is " + ((isWhiteList) ?
+                        "not in the whitelist" :
+                        "in the blacklist"));
+            }
+        } else {
+            return true;
+        }
+        return false;
     }
 
     public CMDLimiter<T> whitelist(boolean bool) { this.isWhiteList = bool; return this; }

@@ -4,14 +4,17 @@ import com.github.anthropoworphous.commandlib.adaptor.processor.CMDExecutor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.logging.Logger;
-
 public final class CMDLib extends JavaPlugin {
 
     private static CMDExecutor executor;
     public static CMDExecutor getExecutor() { return executor; }
 
-    public static Logger getlogger() { return Bukkit.getLogger(); }
+    public static void log(String str) {
+        Bukkit.getLogger().info("[CMDLib]: " + str);
+    }
+
+    private static boolean logDetails = false;
+    public static boolean logDetails() { return logDetails; }
 
     @Override
     public void onEnable() {
@@ -19,4 +22,6 @@ public final class CMDLib extends JavaPlugin {
 
         getServer().getConsoleSender().sendMessage("CommandLib loaded!");
     }
+
+    public static void setLogDetails(boolean logDetails) { CMDLib.logDetails = logDetails; }
 }
