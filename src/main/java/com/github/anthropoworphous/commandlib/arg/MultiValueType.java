@@ -14,7 +14,8 @@ import java.util.stream.Collectors;
 
 public enum MultiValueType implements ArgsType {
     VECTOR("<Vector>",
-            "3 number like: 69 1 420") {
+            "3 number like: 69 1 420",
+            BaseTypes.DOUBLE, BaseTypes.DOUBLE, BaseTypes.DOUBLE) {
         /**
          * parse a vector
          * @param input (number number number)
@@ -64,7 +65,8 @@ public enum MultiValueType implements ArgsType {
         }
     },
     LOCATION_NO_ANGLE("<Location>",
-            "world + 3 number like: world_the_end 69 1 420") {
+            "world + 3 number like: world_the_end 69 1 420",
+            BaseTypes.WORLD, BaseTypes.DOUBLE, BaseTypes.DOUBLE, BaseTypes.DOUBLE) {
         /**
          * parse a location with out pitch and yaw
          * @param str world number number number
@@ -128,7 +130,9 @@ public enum MultiValueType implements ArgsType {
         }
     },
     LOCATION_WITH_ANGLE("<Location+Angle>",
-            "world + 5 number like: world_the_end 69 1 420 6 9") {
+            "world + 5 number like: world_the_end 69 1 420 6 9",
+            BaseTypes.WORLD, BaseTypes.DOUBLE, BaseTypes.DOUBLE,
+            BaseTypes.DOUBLE, BaseTypes.DOUBLE, BaseTypes.DOUBLE) {
         /**
          * parse a vector
          * @param str world number number number
@@ -196,7 +200,7 @@ public enum MultiValueType implements ArgsType {
         }
     };
 
-    MultiValueType(String readableName, String readableDescription) {
+    MultiValueType(String readableName, String readableDescription, BaseTypes... base) {
         this.readableName = readableName;
         this.readableDescription = readableDescription;
     }

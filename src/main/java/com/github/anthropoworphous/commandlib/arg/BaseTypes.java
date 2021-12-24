@@ -2,11 +2,14 @@ package com.github.anthropoworphous.commandlib.arg;
 
 import com.github.anthropoworphous.commandlib.adaptor.CMDLimiter;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Biome;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -225,8 +228,8 @@ public enum BaseTypes implements ArgsType {
         public CMDLimiter<Player> constructLimiter() {
             return new CMDLimiter<Player>(this)
                     .addAutoFill(() -> Bukkit.getOnlinePlayers().stream()
-                    .map(Player::getName)
-                    .collect(Collectors.toList()));
+                            .map(Player::getName)
+                            .collect(Collectors.toList()));
         }
 
         @Override
@@ -426,6 +429,102 @@ public enum BaseTypes implements ArgsType {
         @Override
         public @NotNull Class<?> returnType() {
             return BlockFace.class;
+        }
+    },
+    MATERIAL("<Material>",
+            "") {
+        @Override
+        @Nullable
+        @SuppressWarnings("unchecked")
+        public Material stringToArgType(String input) {
+            return Stream.of(Material.values())
+                    .filter(material -> material.name().equalsIgnoreCase(input))
+                    .findAny()
+                    .orElse(null);
+        }
+
+        @Override
+        public @NotNull String argTypeToString(Object input) {
+            return ((Material) input).name();
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        @NotNull
+        public CMDLimiter<Material> constructLimiter() {
+            return new CMDLimiter<Material>(this)
+                    .addAutoFill(() -> Stream.of(Material.values())
+                            .map(face -> face.name().toLowerCase())
+                            .collect(Collectors.toList()));
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return Material.class;
+        }
+    },
+    INVENTORY("<Inventory>",
+            "") {
+        @Override
+        @Nullable
+        @SuppressWarnings("unchecked")
+        public InventoryType stringToArgType(String input) {
+            return Stream.of(InventoryType.values())
+                    .filter(inv -> inv.name().equalsIgnoreCase(input))
+                    .findAny()
+                    .orElse(null);
+        }
+
+        @Override
+        public @NotNull String argTypeToString(Object input) {
+            return ((InventoryType) input).name();
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        @NotNull
+        public CMDLimiter<InventoryType> constructLimiter() {
+            return new CMDLimiter<InventoryType>(this)
+                    .addAutoFill(() -> Stream.of(InventoryType.values())
+                            .map(face -> face.name().toLowerCase())
+                            .collect(Collectors.toList()));
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return InventoryType.class;
+        }
+    },
+    POTION_EFFECT_TYPE("<Potion effect type>",
+            "") {
+        @Override
+        @Nullable
+        @SuppressWarnings("unchecked")
+        public PotionEffectType stringToArgType(String input) {
+            return Stream.of(PotionEffectType.values())
+                    .filter(eff -> eff.getName().equalsIgnoreCase(input))
+                    .findAny()
+                    .orElse(null);
+        }
+
+        @Override
+        public @NotNull String argTypeToString(Object input) {
+            return ((PotionEffectType) input).getName();
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        @NotNull
+        public CMDLimiter<PotionEffectType> constructLimiter() {
+            return new CMDLimiter<PotionEffectType>(this)
+                    .addAutoFill(() -> Stream.of(PotionEffectType.values())
+                            .map(face -> face.getName().toLowerCase())
+                            .collect(Collectors.toList()));
+        }
+
+        @Override
+        public @NotNull Class<?> returnType() {
+            return InventoryType.class;
         }
     };
 
