@@ -3,6 +3,7 @@ package com.github.anthropoworphous.commandlib.arg;
 import com.github.anthropoworphous.commandlib.CMDLib;
 import com.github.anthropoworphous.commandlib.adaptor.CMDLimiter;
 import main.structure.tree.Connected;
+import main.structure.tree.IConnectable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class Args {
 
         badArgs = List.of(currentInputs);
         if (limiters != null && limiters.size() != 0 && limiters.stream().allMatch(l -> l.getChild() != null)) {
-            List<Function<Connected.IConnectable, Boolean>> filters = new ArrayList<>();
+            List<Function<IConnectable, Boolean>> filters = new ArrayList<>();
             if (badArgs.size() > 1) {
                 badArgs.subList(0, badArgs.size()-1)
                         .forEach(arg -> filters.add(connectable -> ((CMDLimiter<?>) connectable).validate(arg)));
@@ -48,12 +49,10 @@ public class Args {
 
                     for (Connected f : filtered_ish) {
                         if (f.isChildless()) {
-
                             if (CMDLib.logDetails()) {
                                 CMDLib.log("-\tRoute removed for it has no following argument for completion: "
                                         + f);
                             }
-
                         } else {
                             filtered.addAll(Objects.requireNonNull(f.getChild()));
                         }
@@ -64,7 +63,6 @@ public class Args {
                     if (CMDLib.logDetails()) {
                         CMDLib.log("-\tToo short for filtering, added child of: " + connected);
                     }
-
                 }
             }
 
@@ -73,14 +71,12 @@ public class Args {
 
                 if (fillWith != null) {
                     if (fillWith.getAutoFill().size() != 0) {
-
                         if (CMDLib.logDetails()) {
                             CMDLib.log("-\tAutoFill found, using it for AutoComplete");
                         }
 
                         autoFill.addAll(fillWith.getAutoFill());
                     } else if (fillWith.getLimit().size() > 0) {
-
                         if (CMDLib.logDetails()) {
                             CMDLib.log("-\tLimits found, using it for AutoComplete");
                         }
@@ -90,7 +86,6 @@ public class Args {
                                 .map(limit -> fillWith.getExpectedType().argTypeToString(limit))
                                 .collect(Collectors.toList()));
                     } else {
-
                         if (CMDLib.logDetails()) {
                             CMDLib.log("-\tCould not find anything for autofill, using type name instead");
                         }
@@ -98,7 +93,6 @@ public class Args {
                         autoFill.add(fillWith.getExpectedType().getReadableName());
                     }
                 } else {
-
                     if (CMDLib.logDetails()) {
                         CMDLib.log("-\tType not found...how?");
                     }
@@ -107,7 +101,6 @@ public class Args {
                 }
             }
             if (badArgs.size() > 0) {
-
                 if (CMDLib.logDetails()) {
                     CMDLib.log("-Enough argument for final incomplete argument filter, filtering");
                 }
@@ -142,7 +135,7 @@ public class Args {
         } else if (badArgs.size() == 0) {
             invalidReason = "Missing arguments";
         } else { //have limits
-            List<Function<Connected.IConnectable, Boolean>> filters = new ArrayList<>();
+            List<Function<IConnectable, Boolean>> filters = new ArrayList<>();
             //construct route filters
             badArgs.forEach(arg -> filters.add(connectable -> ((CMDLimiter<?>) connectable).validate(arg)));
 

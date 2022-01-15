@@ -2,7 +2,7 @@ package com.github.anthropoworphous.commandlib.adaptor;
 
 import com.github.anthropoworphous.commandlib.CMDLib;
 import com.github.anthropoworphous.commandlib.arg.BaseTypes;
-import main.structure.tree.Connected;
+import main.structure.tree.IConnectable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
-public class CMDLimiter<T> implements Connected.IConnectable {
+public class CMDLimiter<T> implements IConnectable {
     /**
      * @param expectedType The expected type of this limiter
      * @param autoFill these will be used for command auto fill

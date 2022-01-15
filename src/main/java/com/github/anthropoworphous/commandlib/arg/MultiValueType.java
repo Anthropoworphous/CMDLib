@@ -1,6 +1,6 @@
 package com.github.anthropoworphous.commandlib.arg;
 
-import com.github.anthropoworphous.commandlib.adaptor.CMDLimiter;
+import main.structure.tree.IConnectable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -49,9 +49,7 @@ public enum MultiValueType implements ArgsType {
             return new Vector(coords.get(0), coords.get(1), coords.get(2));
         }
 
-        @NotNull
-        @SuppressWarnings("unchecked")
-        List<CMDLimiter<?>> constructLimiter() {
+        public @NotNull List<IConnectable> constructLimiter() {
             return List.of(
                     BaseTypes.DOUBLE.constructLimiter(), //x
                     BaseTypes.DOUBLE.constructLimiter(), //y
@@ -113,9 +111,7 @@ public enum MultiValueType implements ArgsType {
             return new Location(world, coords.get(0), coords.get(1), coords.get(2));
         }
 
-        @NotNull
-        @SuppressWarnings("unchecked")
-        List<CMDLimiter<?>> constructLimiter() {
+        public @NotNull List<IConnectable> constructLimiter() {
             return List.of(
                     BaseTypes.WORLD.constructLimiter(), //world
                     BaseTypes.DOUBLE.constructLimiter(), //x
@@ -181,24 +177,25 @@ public enum MultiValueType implements ArgsType {
                     doubles.get(3).floatValue(), doubles.get(4).floatValue());
         }
 
-        @NotNull
-        @SuppressWarnings("unchecked")
-        List<CMDLimiter<?>> constructLimiter() {
+        public @NotNull List<IConnectable> constructLimiter() {
             return List.of(
                     BaseTypes.WORLD.constructLimiter(), //world
                     BaseTypes.DOUBLE.constructLimiter(), //x
                     BaseTypes.DOUBLE.constructLimiter(), //y
                     BaseTypes.DOUBLE.constructLimiter(), //z
-                    BaseTypes.DOUBLE.constructLimiter(), //yaw
+                    BaseTypes.DOUBLE.constructLimiter()//yaw
+                            .addChecks(yaw -> Math.abs((double) yaw) <= 180),
                     BaseTypes.DOUBLE.constructLimiter() //pitch
-            );
+                            .addChecks(pitch -> Math.abs((double) pitch) <= 90)
+                    );
         }
 
         @Override
         public @NotNull Class<?> returnType() {
             return Location.class;
         }
-    };
+    }
+    ;
 
     MultiValueType(String readableName, String readableDescription, BaseTypes... base) {
         this.readableName = readableName;
@@ -211,7 +208,7 @@ public enum MultiValueType implements ArgsType {
     @Nullable
     public abstract <T> T assemble(Object... objs);
 
-    @NotNull abstract <T> List<CMDLimiter<T>> constructLimiter();
+    @NotNull public abstract List<IConnectable> constructLimiter();
 
     @Override
     public String getReadableName() {
