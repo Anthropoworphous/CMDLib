@@ -1,8 +1,8 @@
-package com.github.anthropoworphous.commandlib.adaptor.processor;
+package com.github.anthropoworphous.cmdlib.adaptor.processor;
 
-import com.github.anthropoworphous.commandlib.CMDLib;
-import com.github.anthropoworphous.commandlib.cmd.ICMD;
-import com.github.anthropoworphous.commandlib.cmd.annotation.Command;
+import com.github.anthropoworphous.cmdlib.CMDLib;
+import com.github.anthropoworphous.cmdlib.cmd.ICMD;
+import com.github.anthropoworphous.cmdlib.cmd.annotation.Command;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;

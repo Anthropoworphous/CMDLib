@@ -1,6 +1,6 @@
-package com.github.anthropoworphous.commandlib.arg;
+package com.github.anthropoworphous.cmdlib.arg;
 
-import com.github.anthropoworphous.commandlib.adaptor.CMDLimiter;
+import com.github.anthropoworphous.cmdlib.adaptor.CMDLimiter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;

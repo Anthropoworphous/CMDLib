@@ -1,12 +1,12 @@
-package com.github.anthropoworphous.commandlib;
+package com.github.anthropoworphous.cmdlib;
 
-import com.github.anthropoworphous.commandlib.adaptor.processor.CMDExecutor;
+import com.github.anthropoworphous.cmdlib.adaptor.processor.CMDExecutor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
 
-public final class CMDLib extends JavaPlugin {
+public class CMDLib extends JavaPlugin {
 
     private static CMDExecutor executor;
     public static CMDExecutor getExecutor() { return executor; }
@@ -26,12 +26,8 @@ public final class CMDLib extends JavaPlugin {
         getServer().getConsoleSender().sendMessage("CommandLib loaded!");
     }
 
-    public static void setLogDetails(boolean logDetails, Logger logger) {
+    public static void logDetails(boolean logDetails, Logger logger) {
         CMDLib.logDetails = logDetails;
         CMDLib.logger = logger;
-    }
-
-    public static void setLogDetails(boolean logDetails) {
-        CMDLib.logDetails = logDetails;
     }
 }

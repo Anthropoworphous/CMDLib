@@ -1,4 +1,4 @@
-package com.github.anthropoworphous.commandlib.cmd;
+package com.github.anthropoworphous.cmdlib.cmd;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package com.github.anthropoworphous.commandlib.arg;
+package com.github.anthropoworphous.cmdlib.arg;
 
-import com.github.anthropoworphous.commandlib.CMDLib;
-import com.github.anthropoworphous.commandlib.adaptor.CMDLimiter;
+import com.github.anthropoworphous.cmdlib.CMDLib;
+import com.github.anthropoworphous.cmdlib.adaptor.CMDLimiter;
 import main.structure.tree.Connected;
 import main.structure.tree.IConnectable;
 

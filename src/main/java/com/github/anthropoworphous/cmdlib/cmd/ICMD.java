@@ -1,6 +1,6 @@
-package com.github.anthropoworphous.commandlib.cmd;
+package com.github.anthropoworphous.cmdlib.cmd;
 
-import com.github.anthropoworphous.commandlib.arg.Args;
+import com.github.anthropoworphous.cmdlib.arg.Args;
 import main.structure.tree.Connected;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

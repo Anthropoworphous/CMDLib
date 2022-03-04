@@ -1,7 +1,7 @@
-package com.github.anthropoworphous.commandlib.adaptor.processor;
+package com.github.anthropoworphous.cmdlib.adaptor.processor;
 
-import com.github.anthropoworphous.commandlib.arg.Args;
-import com.github.anthropoworphous.commandlib.cmd.ICMD;
+import com.github.anthropoworphous.cmdlib.arg.Args;
+import com.github.anthropoworphous.cmdlib.cmd.ICMD;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;

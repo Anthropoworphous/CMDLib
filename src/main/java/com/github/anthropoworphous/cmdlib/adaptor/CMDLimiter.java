@@ -1,7 +1,7 @@
-package com.github.anthropoworphous.commandlib.adaptor;
+package com.github.anthropoworphous.cmdlib.adaptor;
 
-import com.github.anthropoworphous.commandlib.CMDLib;
-import com.github.anthropoworphous.commandlib.arg.BaseTypes;
+import com.github.anthropoworphous.cmdlib.CMDLib;
+import com.github.anthropoworphous.cmdlib.arg.BaseTypes;
 import main.structure.tree.IConnectable;
 import org.jetbrains.annotations.NotNull;
 

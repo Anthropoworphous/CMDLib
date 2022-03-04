@@ -1,4 +1,4 @@
-package com.github.anthropoworphous.commandlib.arg;
+package com.github.anthropoworphous.cmdlib.arg;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

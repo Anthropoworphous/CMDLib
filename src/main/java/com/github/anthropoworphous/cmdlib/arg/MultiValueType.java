@@ -1,4 +1,4 @@
-package com.github.anthropoworphous.commandlib.arg;
+package com.github.anthropoworphous.cmdlib.arg;
 
 import main.structure.tree.IConnectable;
 import org.bukkit.Bukkit;
