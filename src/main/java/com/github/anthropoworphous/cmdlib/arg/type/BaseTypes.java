@@ -5,7 +5,7 @@ import com.github.anthropoworphous.cmdlib.processor.parser.BaseArgParser;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
-public abstract class BaseTypes<S extends BaseTypes<S, T>, T> implements ArgType<S, T> {
+public abstract class BaseTypes<T> implements ArgType<T> {
     public BaseTypes(String readableName, String readableDescription) {
         this.readableName = readableName;
         this.readableDescription = readableDescription;
@@ -14,7 +14,7 @@ public abstract class BaseTypes<S extends BaseTypes<S, T>, T> implements ArgType
 
     private final String readableName;
     private final String readableDescription;
-    private final ArgParser<S, T> parser;
+    private final ArgParser<T> parser;
 
     @Override
     public @NotNull String readableName() {
@@ -31,7 +31,7 @@ public abstract class BaseTypes<S extends BaseTypes<S, T>, T> implements ArgType
     public String argTypeToString(T input) { return String.valueOf(input); }
 
     @Override
-    public @NotNull ArgParser<S, T> parser() {
+    public @NotNull ArgParser<T> parser() {
         return parser;
     }
 }

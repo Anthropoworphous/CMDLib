@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class PlayerVar extends BaseTypes<PlayerVar, Player> {
+public class PlayerVar extends BaseTypes<Player> {
     public PlayerVar() {
         super("<Player>", "Anthropoworphous, or some other player's name");
     }
@@ -27,7 +27,7 @@ public class PlayerVar extends BaseTypes<PlayerVar, Player> {
 
     @Override
     @NotNull
-    public ArgParser<PlayerVar, Player> parser() {
+    public ArgParser<Player> parser() {
         return new BaseArgParser<>(this, () -> Bukkit.getOnlinePlayers().stream()
                 .map(Player::getName)
                 .collect(Collectors.toList()));

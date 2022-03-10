@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class AttributeVar extends BaseTypes<AttributeVar, Attribute> {
+public class AttributeVar extends BaseTypes<Attribute> {
     public AttributeVar() {
         super("<Attribute>", "generic_attack_speed, generic_armor, generic_movement_speed");
     }
@@ -30,7 +30,7 @@ public class AttributeVar extends BaseTypes<AttributeVar, Attribute> {
 
     @Override
     @NotNull
-    public ArgParser<AttributeVar, Attribute> parser() {
+    public ArgParser<Attribute> parser() {
         return new BaseArgParser<>(this,
                 () -> Stream.of(Attribute.values())
                         .map(attribute -> attribute.name().toLowerCase())

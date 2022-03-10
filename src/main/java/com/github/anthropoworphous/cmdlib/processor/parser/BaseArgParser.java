@@ -8,32 +8,32 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
-public class BaseArgParser<A extends ArgType<A, T>, T> implements ArgParser<A, T> {
-    public BaseArgParser(ArgType<A, T> expectedType, String... autoFill) {
+public class BaseArgParser<T> implements ArgParser<T> {
+    public BaseArgParser(ArgType<T> expectedType, String... autoFill) {
         this.expectedType = expectedType;
         Arrays.stream(autoFill).forEach(this::addAutoFill);
     }
-    public BaseArgParser(ArgType<A, T> expectedType, List<String> autoFill) {
+    public BaseArgParser(ArgType<T> expectedType, List<String> autoFill) {
         this.expectedType = expectedType;
         autoFill.forEach(this::addAutoFill);
     }
-    public BaseArgParser(ArgType<A, T> expectedType, Supplier<List<String>> autoFill) {
+    public BaseArgParser(ArgType<T> expectedType, Supplier<List<String>> autoFill) {
         this.expectedType = expectedType;
         autoFill.get().forEach(this::addAutoFill);
     }
-    public BaseArgParser(ArgType<A, T> expectedType) {
+    public BaseArgParser(ArgType<T> expectedType) {
         this.expectedType = expectedType;
     }
 
     //auto complete
-    private final ArgType<A, T> expectedType;
+    private final ArgType<T> expectedType;
     private final List<Supplier<List<String>>> autoFill = new ArrayList<>();
     private final List<T> whitelist = new ArrayList<>();
     private final List<T> blacklist = new ArrayList<>();
     private final List<Function<T, Boolean>> checks = new ArrayList<>();
 
     @Override
-    public ArgType<A, T> getArgType() {
+    public ArgType<T> getArgType() {
         return expectedType;
     }
 
@@ -72,7 +72,8 @@ public class BaseArgParser<A extends ArgType<A, T>, T> implements ArgParser<A, T
     public boolean validation(String input) {
         try {
             parse(input);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;

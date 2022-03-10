@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class FloatVar extends BaseTypes<FloatVar, Float> {
+public class FloatVar extends BaseTypes<Float> {
     public FloatVar() {
         super("<Float>", "Ex: 1.2, -6.9, 4.20");
     }

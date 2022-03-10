@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class DoubleVar extends BaseTypes<DoubleVar, Double> {
+public class DoubleVar extends BaseTypes<Double> {
     public DoubleVar() {
         super("<Double>", "Ex: 1.2, -6.9, 4.20");
     }

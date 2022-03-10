@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class BiomeVar extends BaseTypes<BiomeVar, Biome> {
+public class BiomeVar extends BaseTypes<Biome> {
     public BiomeVar() {
         super("<Biome>", "desert, ocean, swamp");
     }
@@ -30,7 +30,7 @@ public class BiomeVar extends BaseTypes<BiomeVar, Biome> {
 
     @Override
     @NotNull
-    public ArgParser<BiomeVar, Biome> parser() {
+    public ArgParser<Biome> parser() {
         return new BaseArgParser<>(this,
                 () -> Stream.of(Biome.values())
                         .map(biome -> biome.name().toLowerCase())

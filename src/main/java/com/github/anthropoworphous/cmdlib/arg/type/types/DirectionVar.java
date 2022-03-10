@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class DirectionVar extends BaseTypes<DirectionVar, BlockFace> {
+public class DirectionVar extends BaseTypes<BlockFace> {
     public DirectionVar() {
         super("<Direction>", "north, up, south");
     }
@@ -30,7 +30,7 @@ public class DirectionVar extends BaseTypes<DirectionVar, BlockFace> {
 
     @Override
     @NotNull
-    public ArgParser<DirectionVar, BlockFace> parser() {
+    public ArgParser<BlockFace> parser() {
         return new BaseArgParser<>(this,
                 () -> Stream.of(BlockFace.values())
                         .map(face -> face.name().toLowerCase())

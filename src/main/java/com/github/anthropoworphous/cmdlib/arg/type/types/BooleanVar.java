@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class BooleanVar extends BaseTypes<BooleanVar, Boolean> {
+public class BooleanVar extends BaseTypes<Boolean> {
     public BooleanVar() {
         super("<Boolean>", "True/False");
     }
@@ -18,7 +18,7 @@ public class BooleanVar extends BaseTypes<BooleanVar, Boolean> {
     }
 
     @Override
-    public @NotNull ArgParser<BooleanVar, Boolean> parser() {
+    public @NotNull ArgParser<Boolean> parser() {
         return new BaseArgParser<>(this, "true", "false");
     }
 }

@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class InventoryTypeVar extends BaseTypes<InventoryTypeVar, InventoryType> {
+public class InventoryTypeVar extends BaseTypes<InventoryType> {
     public InventoryTypeVar() {
         super("<Inventory>", "");
     }
@@ -30,7 +30,7 @@ public class InventoryTypeVar extends BaseTypes<InventoryTypeVar, InventoryType>
 
     @Override
     @NotNull
-    public ArgParser<InventoryTypeVar, InventoryType> parser() {
+    public ArgParser<InventoryType> parser() {
         return new BaseArgParser<>(this,
                 () -> Stream.of(InventoryType.values())
                         .map(face -> face.name().toLowerCase())

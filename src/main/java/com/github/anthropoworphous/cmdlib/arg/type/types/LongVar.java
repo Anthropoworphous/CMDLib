@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class LongVar extends BaseTypes<LongVar, Long> {
+public class LongVar extends BaseTypes<Long> {
     public LongVar() {
         super("<Long>", "Ex: 1, 5, 9223372036854775807");
     }

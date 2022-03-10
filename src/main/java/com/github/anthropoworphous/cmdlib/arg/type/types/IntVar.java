@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class IntVar extends BaseTypes<IntVar, Integer> {
+public class IntVar extends BaseTypes<Integer> {
     public IntVar() {
         super("<Integer>", "Ex: 1, 2, -3");
     }

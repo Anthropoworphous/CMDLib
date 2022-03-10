@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class ObjectVar extends BaseTypes<ObjectVar, Object> {
+public class ObjectVar extends BaseTypes<Object> {
     public ObjectVar() {
         super("<Object>", "Ex: 1, e, True");
     }

@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class PotionEffectTypeVar extends BaseTypes<PotionEffectTypeVar, PotionEffectType> {
+public class PotionEffectTypeVar extends BaseTypes<PotionEffectType> {
     public PotionEffectTypeVar() {
         super("<Potion effect type>", "");
     }
@@ -30,7 +30,7 @@ public class PotionEffectTypeVar extends BaseTypes<PotionEffectTypeVar, PotionEf
 
     @Override
     @NotNull
-    public ArgParser<PotionEffectTypeVar, PotionEffectType> parser() {
+    public ArgParser<PotionEffectType> parser() {
         return new BaseArgParser<>(this, () -> Stream.of(PotionEffectType.values())
                 .map(face -> face.getName().toLowerCase())
                 .collect(Collectors.toList()));

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class WorldVar extends BaseTypes<WorldVar, World> {
+public class WorldVar extends BaseTypes<World> {
     public WorldVar() {
         super("<World>", "world_the_end, or some other world's name");
     }
@@ -28,7 +28,7 @@ public class WorldVar extends BaseTypes<WorldVar, World> {
 
     @Override
     @NotNull
-    public ArgParser<WorldVar, World> parser() {
+    public ArgParser<World> parser() {
         return new BaseArgParser<>(this,
                 () -> (Bukkit.getWorlds().stream()
                         .map(World::getName)

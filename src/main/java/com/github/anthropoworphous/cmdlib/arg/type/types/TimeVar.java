@@ -13,21 +13,23 @@ import java.util.regex.Pattern;
 /**
  * Convert time spam to tick and back
  */
-public class TimeVar extends BaseTypes<TimeVar, Long> {
+public class TimeVar extends BaseTypes<Long> {
     public TimeVar() {
         super("<Time>", "420s, 69day, support t/s/m/h/d/week/month/year");
     }
 
     @Override
     public @NotNull Optional<Long> stringToArgType(String input) {
-        Matcher match = Pattern.compile("([0-9]*\\.[0-9]*)(\\w+)").matcher(input);
+        Matcher match = Pattern.compile("(\\d+\\.?\\d*)\\s?([A-z]+)").matcher(input);
 
-        for (TimeUnits u : TimeUnits.values()) {
-            if (u.check(Optional.of(match.group(1).toLowerCase()).orElseThrow())) {
-                return Optional.of(match.group(0))
-                        .map(t -> ((long) (Double.parseDouble(t) * u.multiplier)));
+        if (match.find()) {
+            for (TimeUnits u : TimeUnits.values()) {
+                if (u.check(match.group(2).toLowerCase())) {
+                    return Optional.of((long) (Double.parseDouble(match.group(1)) * u.multiplier));
+                }
             }
         }
+
         return Optional.empty();
     }
 
@@ -46,7 +48,7 @@ public class TimeVar extends BaseTypes<TimeVar, Long> {
 
     @Override
     @NotNull
-    public ArgParser<TimeVar, Long> parser() {
+    public ArgParser<Long> parser() {
         return new BaseArgParser<>(this);
     }
 

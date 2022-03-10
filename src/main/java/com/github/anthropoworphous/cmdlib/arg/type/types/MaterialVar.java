@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class MaterialVar extends BaseTypes<MaterialVar, Material> {
+public class MaterialVar extends BaseTypes<Material> {
     public MaterialVar() {
         super("<Material>", "");
     }
@@ -30,7 +30,7 @@ public class MaterialVar extends BaseTypes<MaterialVar, Material> {
 
     @Override
     @NotNull
-    public ArgParser<MaterialVar, Material> parser() {
+    public ArgParser<Material> parser() {
         return new BaseArgParser<>(this,
                 () -> Stream.of(Material.values())
                         .map(face -> face.name().toLowerCase())
