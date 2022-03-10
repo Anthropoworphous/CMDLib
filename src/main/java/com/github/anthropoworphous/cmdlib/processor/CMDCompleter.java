@@ -1,4 +1,4 @@
-package com.github.anthropoworphous.cmdlib.adaptor.processor;
+package com.github.anthropoworphous.cmdlib.processor;
 
 import com.github.anthropoworphous.cmdlib.arg.Args;
 import com.github.anthropoworphous.cmdlib.cmd.ICMD;
@@ -18,6 +18,6 @@ public class CMDCompleter implements TabCompleter {
                                                 @NotNull String[] badArgs) {
         ICMD cmd = CMDRegister.getCMD(cmdName.getName());
 
-        return new Args(cmd.cmdLimiter(), badArgs).getAutoFill();
+        return new Args(cmd.cmdArgType(), badArgs, false).getAnalyst().getAutoFill();
     }
 }

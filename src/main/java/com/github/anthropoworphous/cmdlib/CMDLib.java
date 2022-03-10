@@ -1,6 +1,6 @@
 package com.github.anthropoworphous.cmdlib;
 
-import com.github.anthropoworphous.cmdlib.adaptor.processor.CMDExecutor;
+import com.github.anthropoworphous.cmdlib.processor.CMDExecutor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 

@@ -1,4 +1,4 @@
-package com.github.anthropoworphous.cmdlib.adaptor.processor;
+package com.github.anthropoworphous.cmdlib.processor;
 
 import com.github.anthropoworphous.cmdlib.CMDLib;
 import com.github.anthropoworphous.cmdlib.cmd.ICMD;

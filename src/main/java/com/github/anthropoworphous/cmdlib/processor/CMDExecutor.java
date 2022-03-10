@@ -1,7 +1,8 @@
-package com.github.anthropoworphous.cmdlib.adaptor.processor;
+package com.github.anthropoworphous.cmdlib.processor;
 
 import com.github.anthropoworphous.cmdlib.CMDLib;
 import com.github.anthropoworphous.cmdlib.arg.Args;
+import com.github.anthropoworphous.cmdlib.arg.ArgsGroup;
 import com.github.anthropoworphous.cmdlib.cmd.ICMD;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,15 +28,14 @@ public class CMDExecutor implements CommandExecutor {
                     + String.join(", ", badArgs));
         }
 
-        Args args = new Args(badArgs, c.cmdLimiter());
+        ArgsGroup args;
 
-        if (CMDLib.logDetails()) {
-            CMDLib.log("Argument " + ((badArgs.length == 1) ? " " : "s ")
-                    + "is " + ((args.isValid() ?
-                    "valid" :
-                    "invalid, because: " + args.invalidReason())));
+        try {
+            args = new Args(c.cmdArgType(), badArgs, true);
+            return (args.getAnalyst().validate()) ? c.execute(s, args.getAnalyst()) : false;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        return (args.isValid()) ? c.execute(s, args) : false;
+        return false;
     }
 }

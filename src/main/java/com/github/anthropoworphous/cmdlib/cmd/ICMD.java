@@ -1,6 +1,7 @@
 package com.github.anthropoworphous.cmdlib.cmd;
 
-import com.github.anthropoworphous.cmdlib.arg.Args;
+import com.github.anthropoworphous.cmdlib.arg.ArgsAnalyst;
+import com.github.anthropoworphous.cmdlib.arg.type.ArgType;
 import main.structure.tree.Connected;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -13,17 +14,17 @@ public interface ICMD {
      * This method is called when someone that have the required permission (if set)
      * and enter argument according to the rules definded by argsLimiters
      * @param sender The command sender
-     * @param args the argument
+     * @param analyst the argument analyst
      * @return If this method return false, the usage of this command will be send to the command sender.
      * However, that doesn't mean the action in this method is and will be cancelled.
      */
-    Boolean execute(CommandSender sender, Args args);
+    Boolean execute(CommandSender sender, ArgsAnalyst analyst);
 
     /**
      * Limit and shape the argmument
      * @return The limiters to use
      */
-    @Nullable List<Connected> cmdLimiter();
+    @Nullable List<Connected<ArgType<?, ?>>> cmdArgType();
     @NotNull String cmdName();
     String cmdDescription();
     String cmdUsage();

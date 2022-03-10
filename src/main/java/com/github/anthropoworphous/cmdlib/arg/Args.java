@@ -1,13 +1,12 @@
 package com.github.anthropoworphous.cmdlib.arg;
 
-import com.github.anthropoworphous.cmdlib.CMDLib;
-import com.github.anthropoworphous.cmdlib.adaptor.CMDLimiter;
+import com.github.anthropoworphous.cmdlib.arg.type.ArgType;
+import com.github.anthropoworphous.cmdlib.arg.type.types.ObjectVar;
+import com.github.anthropoworphous.cmdlib.processor.parser.ArgParser;
 import main.structure.tree.Connected;
-import main.structure.tree.IConnectable;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -15,211 +14,119 @@ import java.util.stream.Collectors;
  * Need to be optimised...
  */
 @SuppressWarnings({"unused"})
-public class Args {
-    /**
-     * search for autofill
-     * @param limiters command limit
-     * @param currentInputs user input
-     */
-    public Args(List<Connected> limiters, String[] currentInputs) {
-
-        if (CMDLib.logDetails()) {
-            CMDLib.log("Checking argument" + ((currentInputs.length == 1) ? " " : "s ")
-                    + "for autocomplete"
-            );
-        }
-
-        badArgs = List.of(currentInputs);
-        if (limiters != null && limiters.size() != 0 && limiters.stream().allMatch(l -> l.getChild() != null)) {
-            List<Function<IConnectable, Boolean>> filters = new ArrayList<>();
-            if (badArgs.size() > 1) {
-                badArgs.subList(0, badArgs.size()-1)
-                        .forEach(arg -> filters.add(connectable -> ((CMDLimiter<?>) connectable).validate(arg)));
+public class Args implements ArgsGroup {
+    public Args(@Nullable List<Connected<ArgType<?, ?>>> argTypes, @Nullable String[] currentInputs, boolean finished) {
+        if ((currentInputs == null || currentInputs.length == 0) && (argTypes == null || argTypes.size() == 0)) {
+            analyst = new Analyst(Collections.emptyList(), Collections.emptySet());
+        } else {
+            assert argTypes != null; //checked in the if statement
+            assert currentInputs != null; //checked in the if statement
+            List<String> input = Arrays.asList(currentInputs);
+            if (!finished) {
+                input.remove(input.size() - 1);
             }
-
-            List<Connected> filtered = new ArrayList<>();
-            List<Connected> filtered_ish;
-            for (Connected connected : limiters) {
-                if (badArgs.size() > 1) {
-                    filtered_ish = connected.multiLayerFilter(filters, false);
-
-                    if (CMDLib.logDetails()) {
-                        CMDLib.log("-\tFiltering route: " + connected);
-                    }
-
-                    for (Connected f : filtered_ish) {
-                        if (f.isChildless()) {
-                            if (CMDLib.logDetails()) {
-                                CMDLib.log("-\tRoute removed for it has no following argument for completion: "
-                                        + f);
-                            }
-                        } else {
-                            filtered.addAll(Objects.requireNonNull(f.getChild()));
-                        }
-                    }
-                } else {
-                    filtered.addAll(Objects.requireNonNull(connected.getChild()));
-
-                    if (CMDLib.logDetails()) {
-                        CMDLib.log("-\tToo short for filtering, added child of: " + connected);
-                    }
-                }
-            }
-
-            for (Connected connected : filtered) {
-                CMDLimiter<?> fillWith = (CMDLimiter<?>) connected.getValue();
-
-                if (fillWith != null) {
-                    if (fillWith.getAutoFill().size() != 0) {
-                        if (CMDLib.logDetails()) {
-                            CMDLib.log("-\tAutoFill found, using it for AutoComplete");
-                        }
-
-                        autoFill.addAll(fillWith.getAutoFill());
-                    } else if (fillWith.getLimit().size() > 0) {
-                        if (CMDLib.logDetails()) {
-                            CMDLib.log("-\tLimits found, using it for AutoComplete");
-                        }
-
-                        autoFill.addAll(fillWith.getLimit()
-                                .stream()
-                                .map(limit -> fillWith.getExpectedType().argTypeToString(limit))
-                                .collect(Collectors.toList()));
-                    } else {
-                        if (CMDLib.logDetails()) {
-                            CMDLib.log("-\tCould not find anything for autofill, using type name instead");
-                        }
-
-                        autoFill.add(fillWith.getExpectedType().getReadableName());
-                    }
-                } else {
-                    if (CMDLib.logDetails()) {
-                        CMDLib.log("-\tType not found...how?");
-                    }
-
-                    autoFill.add("<Unknown>");
-                }
-            }
-            if (badArgs.size() > 0) {
-                if (CMDLib.logDetails()) {
-                    CMDLib.log("-Enough argument for final incomplete argument filter, filtering");
-                }
-
-                autoFill.removeIf(str -> !str.contains(badArgs.get(badArgs.size()-1)));
-            }
+            analyst = new Analyst(Arrays.asList(currentInputs), routeFilter(argTypes, input, finished));
         }
     }
 
-    /**
-     * varify the user input
-     * @param reallyBadArgs user input
-     * @param limiters command limit
-     */
-    public Args(String[] reallyBadArgs, List<Connected> limiters) {
+    //field
+    private final ArgsAnalyst analyst;
+    //end
 
-        if (CMDLib.logDetails()) {
-            CMDLib.log("Checking argument" + ((reallyBadArgs.length == 1) ? " " : "s ")
-                    + "for execution"
-            );
+    //getter
+    @Override
+    public ArgsAnalyst getAnalyst() {
+        return analyst;
+    }
+    //end
+
+    /**
+     * filter all the routes
+     * @param argTypes all the routes
+     * @param currentInputs what the player have inputted
+     * @param finished whether the player have finished typing or not
+     * @return return all possible routes set(path(connected(ArgType)))
+     */
+    public static Set<List<Connected<ArgType<?, ?>>>> routeFilter(
+            List<Connected<ArgType<?, ?>>> argTypes,
+            List<String> currentInputs,
+            boolean finished
+    ) {
+        return argTypes.stream()
+                .map(connected -> connected.multiLayerFilter(buildFilters(argTypes, currentInputs), finished))
+                .flatMap(list -> list.stream().map(child -> child.slimTree(false)))
+                .collect(Collectors.toSet());
+    }
+
+    public static List<Function<ArgType<?, ?>, Boolean>> buildFilters(
+            List<Connected<ArgType<?, ?>>> argTypes,
+            List<String> currentInputs
+    ) {
+        List<Function<ArgType<?, ?>, Boolean>> filters = new ArrayList<>();
+        int index = 0;
+        for (Connected<ArgType<?, ?>> argType : argTypes) {
+            String input = currentInputs.get(index++);
+            filters.add(value -> (value.parser().validation(input)));
+        }
+        return filters;
+    }
+
+
+    //analyst
+    public record Analyst(List<String> input,
+                          Set<List<Connected<ArgType<?, ?>>>> routes)
+            implements ArgsAnalyst
+    {
+        @Override
+        public <T> T get(Class<T> c, int index) {
+            //+ 1 for root node
+            Object obj = getParser().get(index).getArgType().stringToArgType(input.get(index))
+                    .orElseThrow(() -> new IllegalArgumentException("Unable to cast to type: " + c.toString()));
+            if (!c.isInstance(obj)) {
+                throw new IllegalArgumentException("Type doesn't match parser type: "
+                        + getParser().get(index).getArgType().readableName());
+            }
+            return c.cast(obj);
         }
 
-        badArgs = List.of(reallyBadArgs);
-        //Check for availability
-        //no limit = do not accept args
-        if ((limiters == null || limiters.size() == 0)) {
-            if (badArgs.size() == 0) {
-                valid = true;
-            } else {
-                invalidReason = "Command do not accept arguments";
-            }
-        } else if (badArgs.size() == 0) {
-            invalidReason = "Missing arguments";
-        } else { //have limits
-            List<Function<IConnectable, Boolean>> filters = new ArrayList<>();
-            //construct route filters
-            badArgs.forEach(arg -> filters.add(connectable -> ((CMDLimiter<?>) connectable).validate(arg)));
-
-            List<List<Connected>> routes = new ArrayList<>();
-            for (Connected l : limiters) {
-                for (Connected connected : l.multiLayerFilter(filters, true)) {
-                    List<Connected> oneWideTreeFromChild = Connected.getSlimTreeFromChild(connected);
-                    routes.add(oneWideTreeFromChild);
-                }
-            }
-            if (routes.size() == 0) {
-                invalidReason = "Invalid input";
-            } else if (routes.size() > 1) {
-                invalidReason = "Match multiple args routes, contact dev";
-            } else {
-                for (Connected c : routes.get(0)) {//cast individually
-                    limiter.add((CMDLimiter<?>) c.getValue());
-                }
-                valid = true;
-            }
+        @Override
+        public boolean validate() {
+            return routes.size() == 1;
         }
-    }
 
-    private final List<String> badArgs;
-    private boolean valid = false;
-    private String invalidReason;
-    private final List<CMDLimiter<?>> limiter = new ArrayList<>();
-    private final List<String> autoFill = new ArrayList<>();
+        @Override
+        public List<ArgParser<?, ?>> getParser() {
+            return validate() ?
+                    routes.stream().findFirst().orElseThrow()
+                            .stream()
+                            .map(connected -> connected.value()
+                                    .orElse(new ObjectVar())
+                                    .parser()
+                            )
+                            .collect(Collectors.toList())
+                    : Collections.emptyList();
+        }
 
-    public boolean isValid() {
-        return valid;
-    }
-    public String invalidReason() {
-        return invalidReason;
-    }
+        @Override
+        public int getInputSize() {
+            return input.size();
+        }
 
-    public List<String> getAutoFill() {
-        return autoFill;
-    }
-
-    public int getSize() {
-        return (badArgs != null) ? badArgs.size() : 0;
-    }
-    public BaseTypes getType(int index) {
-        return limiter.get(index).getExpectedType();
-    }
-
-    public <T> T get(Class<T> type, int index) {
-        return limiter.get(index).getExpectedType().stringToArgType(badArgs.get(index));
-    }
-
-    /**
-     * This is just getObject(), there is no difference
-     * @param index is just index
-     * @return object of this index
-     */
-    public Object get(int index) {
-        return getObject(index);
-    }
-
-    /**
-     * This return object
-     * If there was no limiter it'll just return the string in object form
-     * @param index is just index
-     * @return object of this index
-     */
-    public Object getObject(int index) {
-        return (limiter.get(index) == null) ?
-                badArgs.get(index) :
-                limiter.get(index).getValue(badArgs.get(index));
-    }
-    public String getString(int index) {
-        return badArgs.get(index);
-    }
-    public int getInt(int index) {
-        return (int) limiter.get(index).getValue(badArgs.get(index));
-    }
-    public double getDouble(int index) {
-        return (double) limiter.get(index).getValue(badArgs.get(index));
-    }
-    public float getFloat(int index) {
-        return (float) limiter.get(index).getValue(badArgs.get(index));
-    }
-    public boolean getBoolean(int index) {
-        return (boolean) limiter.get(index).getValue(badArgs.get(index));
+        @Override
+        public List<String> getAutoFill() {
+            return routes.stream()
+                    .filter(route -> route.size() >= getInputSize()) //filter out those that are too short
+                    .flatMap(list -> list
+                            //get the arg type responsible for the current input
+                            .get(getInputSize() - 1)
+                            .value()
+                            .orElseThrow(() -> new IllegalArgumentException("Missing ArgType"))
+                            .parser()
+                            .getAutoFill()
+                            .stream()
+                            //filter the provided autofill with the current string
+                            .filter(completion -> completion.toLowerCase().contains(input.get(input.size() - 1)))
+                    ).collect(Collectors.toList());
+        }
     }
 }
