@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 public class CMDRegister {
     private static final Map<String, ICMD> registeredCMD = new HashMap<>();
 
@@ -42,8 +43,6 @@ public class CMDRegister {
             }
         });
     }
-
-    @SuppressWarnings("unused")
     public static void registerCMD(ICMD unregisteredICMD, JavaPlugin plugin) {
         PluginCommand cmd = Objects.requireNonNull(createCommand(unregisteredICMD.cmdName(), plugin));
         cmd.setDescription(unregisteredICMD.cmdDescription());
@@ -59,10 +58,7 @@ public class CMDRegister {
 
         CMDLib.log("Command " + unregisteredICMD.cmdName() + " registered");
     }
-
     public static ICMD getCMD(String name) { return registeredCMD.get(name); }
-
-
 
     private static PluginCommand createCommand(String name, JavaPlugin plugin) {
         PluginCommand command = null;

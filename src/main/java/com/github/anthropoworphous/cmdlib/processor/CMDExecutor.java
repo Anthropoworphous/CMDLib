@@ -1,8 +1,7 @@
 package com.github.anthropoworphous.cmdlib.processor;
 
-import com.github.anthropoworphous.cmdlib.CMDLib;
-import com.github.anthropoworphous.cmdlib.arg.ArgsGroup;
 import com.github.anthropoworphous.cmdlib.arg.Args;
+import com.github.anthropoworphous.cmdlib.arg.ArgsGroup;
 import com.github.anthropoworphous.cmdlib.cmd.ICMD;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,18 +17,7 @@ public class CMDExecutor implements CommandExecutor {
                              @NotNull String[] badArgs) {
         ICMD c = CMDRegister.getCMD(cmd.getName());
 
-        if (CMDLib.logDetails()) {
-            CMDLib.log("Command called: /" + cmd.getName()
-                    + ((badArgs.length == 0) ?
-                    " without arguments" :
-                    "with argument" + ((badArgs.length == 1) ?
-                            " " :
-                            "s "))
-                    + String.join(", ", badArgs));
-        }
-
         Args args;
-
         try {
             args = new ArgsGroup(c.cmdArgType(), badArgs, true);
             return (args.getAnalyst().validate()) ? c.execute(s, args.getAnalyst()) : false;
