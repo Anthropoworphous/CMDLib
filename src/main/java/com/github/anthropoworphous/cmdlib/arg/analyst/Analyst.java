@@ -20,7 +20,7 @@ public record Analyst(List<String> input, Set<List<Connected<ArgType<?>>>> route
         try {
             result = (T) getParser().get(index).getArgType()
                     .stringToArgType(input.get(index))
-                    .orElseThrow(); //handled in ArgParser
+                    .orElseThrow(); //<- handled in ArgParser
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
