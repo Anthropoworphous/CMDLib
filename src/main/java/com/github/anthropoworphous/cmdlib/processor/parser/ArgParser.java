@@ -10,4 +10,6 @@ public interface ArgParser<T> extends ModifiableParser<T> {
     boolean validation(String input);
 
     List<String> getAutoFill();
+    List<T> getWhiteList();
+    List<T> getBlackList();
 }

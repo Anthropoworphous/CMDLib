@@ -104,4 +104,14 @@ public class BaseArgParser<T> implements ArgParser<T> {
                     .filter(option -> Optional.ofNullable(parse(option)).isPresent())
             ).collect(Collectors.toList());
     }
+
+    @Override
+    public List<T> getWhiteList() {
+        return whitelist;
+    }
+
+    @Override
+    public List<T> getBlackList() {
+        return blacklist;
+    }
 }
