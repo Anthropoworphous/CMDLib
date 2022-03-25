@@ -1,8 +1,7 @@
 package com.github.anthropoworphous.cmdlib.cmd;
 
 import com.github.anthropoworphous.cmdlib.arg.analyst.ArgsAnalyst;
-import com.github.anthropoworphous.cmdlib.arg.type.ArgType;
-import main.structure.tree.Connected;
+import com.github.anthropoworphous.cmdlib.arg.route.IRoute;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +23,7 @@ public interface ICMD {
      * Limit and shape the argmument
      * @return The limiters to use
      */
-    @Nullable List<Connected<ArgType<?>>> cmdArgType();
+    @Nullable List<IRoute> cmdRoutes();
     @NotNull String cmdName();
     String cmdDescription();
     String cmdUsage();

@@ -1,6 +1,6 @@
 package com.github.anthropoworphous.cmdlib.processor;
 
-import com.github.anthropoworphous.cmdlib.arg.ArgsGroup;
+import com.github.anthropoworphous.cmdlib.arg.analyst.implementation.Analyst;
 import com.github.anthropoworphous.cmdlib.cmd.ICMD;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -8,6 +8,7 @@ import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class CMDCompleter implements TabCompleter {
@@ -18,6 +19,6 @@ public class CMDCompleter implements TabCompleter {
                                                 @NotNull String[] badArgs) {
         ICMD cmd = CMDRegister.getCMD(cmdName.getName());
 
-        return new ArgsGroup(cmd.cmdArgType(), badArgs, false).getAnalyst().getAutoFill();
+        return new Analyst(Arrays.asList(badArgs), cmd.cmdRoutes()).getAutoFill();
     }
 }

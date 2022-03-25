@@ -1,12 +1,14 @@
 package com.github.anthropoworphous.cmdlib.processor;
 
-import com.github.anthropoworphous.cmdlib.arg.Args;
-import com.github.anthropoworphous.cmdlib.arg.ArgsGroup;
+import com.github.anthropoworphous.cmdlib.arg.analyst.ArgsAnalyst;
+import com.github.anthropoworphous.cmdlib.arg.analyst.implementation.Analyst;
 import com.github.anthropoworphous.cmdlib.cmd.ICMD;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 public class CMDExecutor implements CommandExecutor {
 
@@ -14,13 +16,13 @@ public class CMDExecutor implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender s,
                              @NotNull Command cmd,
                              @NotNull String label,
-                             @NotNull String[] badArgs) {
-        ICMD c = CMDRegister.getCMD(cmd.getName());
+                             @NotNull String[] strArgs) {
+        ICMD c = CMDRegister.getCMD(cmd.getName()); //get command
 
-        Args args;
+        ArgsAnalyst analyst;
         try {
-            args = new ArgsGroup(c.cmdArgType(), badArgs, true);
-            return (args.getAnalyst().validate()) ? c.execute(s, args.getAnalyst()) : false;
+            analyst = new Analyst(Arrays.asList(strArgs), c.cmdRoutes()); //input, route
+            return (analyst.valid()) ? c.execute(s, analyst) : false;
         } catch (Exception e) {
             e.printStackTrace();
         }
