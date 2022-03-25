@@ -69,18 +69,20 @@ public class Analyst implements ArgsAnalyst {
 
     //helper
     private boolean filterRoutes() {
-        routes = routes.stream()
-                .filter(route -> {
-                    if (route.getDecompressedRoute().size() != input.size()) { return false; }
-                    Iterator<String> str = input.iterator();
-                    return route.getDecompressedRoute()
-                            .stream()
-                            .anyMatch(c -> c.parser().validation(str.next()));
-                })
-                .collect(Collectors.toList());
-        if (routes.size() == 1) {
-            mapValue(routes.get(0));
-            return true;
+        if (input != null && input.size() != 0) {
+            routes = routes.stream()
+                    .filter(route -> {
+                        if (route.getDecompressedRoute().size() != input.size()) { return false; }
+                        Iterator<String> str = input.iterator();
+                        return route.getDecompressedRoute()
+                                .stream()
+                                .anyMatch(c -> c.parser().validation(str.next()));
+                    })
+                    .collect(Collectors.toList());
+            if (routes.size() == 1) {
+                mapValue(routes.get(0));
+                return true;
+            }
         }
         return false;
     }

@@ -17,6 +17,8 @@ public abstract class CMD implements ICMD {
     public String cmdUsage() {
         StringBuilder sb = new StringBuilder();
         if (cmdRoutes() == null || Objects.requireNonNull(cmdRoutes()).size() == 0) {
+            return (sb.append(" - /").append(cmdName())).toString();
+        } else {
             Objects.requireNonNull(cmdRoutes()).forEach(route -> {
                 sb.append(" - /").append(cmdName());
                 route.getRoute().forEach(argType ->
@@ -32,7 +34,6 @@ public abstract class CMD implements ICMD {
             });
             return sb.toString();
         }
-        return (sb.append(" - /").append(cmdName())).toString();
     }
 
     @Override

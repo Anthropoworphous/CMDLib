@@ -1,6 +1,6 @@
 package com.github.anthropoworphous.cmdlib.processor;
 
-import com.github.anthropoworphous.cmdlib.arg.analyst.implementation.Analyst;
+import com.github.anthropoworphous.cmdlib.arg.analyst.ArgsAnalyst;
 import com.github.anthropoworphous.cmdlib.cmd.ICMD;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -19,6 +19,6 @@ public class CMDCompleter implements TabCompleter {
                                                 @NotNull String[] badArgs) {
         ICMD cmd = CMDRegister.getCMD(cmdName.getName());
 
-        return new Analyst(Arrays.asList(badArgs), cmd.cmdRoutes()).getAutoFill();
+        return ArgsAnalyst.of(Arrays.asList(badArgs), cmd.cmdRoutes()).getAutoFill();
     }
 }

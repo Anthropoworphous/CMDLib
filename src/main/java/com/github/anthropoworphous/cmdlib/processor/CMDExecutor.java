@@ -1,7 +1,6 @@
 package com.github.anthropoworphous.cmdlib.processor;
 
 import com.github.anthropoworphous.cmdlib.arg.analyst.ArgsAnalyst;
-import com.github.anthropoworphous.cmdlib.arg.analyst.implementation.Analyst;
 import com.github.anthropoworphous.cmdlib.cmd.ICMD;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,7 +28,7 @@ public class CMDExecutor implements CommandExecutor {
 
         ArgsAnalyst analyst;
         try {
-            analyst = new Analyst(Arrays.asList(strArgs), c.cmdRoutes()); //input, route
+            analyst = ArgsAnalyst.of(Arrays.asList(strArgs), c.cmdRoutes()); //input, route
             return (analyst.valid()) ? c.execute(s, analyst) : false;
         } catch (Exception e) {
             e.printStackTrace();
