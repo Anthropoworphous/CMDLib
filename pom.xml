@@ -76,6 +76,7 @@
             <version>0.10.2</version>
         </dependency>
 
+        <!--
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-core</artifactId>
@@ -87,5 +88,6 @@
             <artifactId>jmh-generator-annprocess</artifactId>
             <version>1.34</version>
         </dependency>
+        -->
     </dependencies>
 </project>

@@ -10,7 +10,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
+
 public class CMDExecutor implements CommandExecutor {
+    public static CommandExecutor getExecutor() {
+        if (executor == null) {
+            executor = new CMDExecutor();
+        }
+        return executor;
+    }
+    private static CommandExecutor executor = null;
 
     @Override
     public boolean onCommand(@NotNull CommandSender s,
