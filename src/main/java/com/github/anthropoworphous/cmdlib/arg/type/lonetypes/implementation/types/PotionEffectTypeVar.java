@@ -4,7 +4,6 @@ import com.github.anthropoworphous.cmdlib.arg.parser.IArgParser;
 import com.github.anthropoworphous.cmdlib.arg.parser.implementation.ArgParser;
 import com.github.anthropoworphous.cmdlib.arg.type.lonetypes.implementation.LoneTypes;
 import org.bukkit.potion.PotionEffectType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,7 +15,7 @@ public class PotionEffectTypeVar extends LoneTypes<PotionEffectType> {
     }
 
     @Override
-    @NotNull
+
     public Optional<PotionEffectType> stringToArgType(String input) {
         return Stream.of(PotionEffectType.values())
                 .filter(eff -> eff.getName().equalsIgnoreCase(input))
@@ -24,12 +23,12 @@ public class PotionEffectTypeVar extends LoneTypes<PotionEffectType> {
     }
 
     @Override
-    public @NotNull String argTypeToString(PotionEffectType input) {
+    public String argTypeToString(PotionEffectType input) {
         return input.getName();
     }
 
     @Override
-    @NotNull
+
     public IArgParser<PotionEffectType> parser() {
         return new ArgParser<>(this, () -> Stream.of(PotionEffectType.values())
                 .map(face -> face.getName().toLowerCase())

@@ -15,14 +15,17 @@ public abstract class BaseArgParser<T> implements IArgParser<T> {
             Arrays.stream(autoFill).forEach(this::addAutoFill);
         }
     }
+
     public BaseArgParser(ArgType<T> expectedType, List<String> autoFill) {
         this.expectedType = expectedType;
         autoFill.forEach(this::addAutoFill);
     }
+
     public BaseArgParser(ArgType<T> expectedType, Supplier<List<String>> autoFill) {
         this.expectedType = expectedType;
         autoFill.get().forEach(this::addAutoFill);
     }
+
     public BaseArgParser(ArgType<T> expectedType) {
         this.expectedType = expectedType;
     }
@@ -40,33 +43,58 @@ public abstract class BaseArgParser<T> implements IArgParser<T> {
     public ArgType<T> getArgType() {
         return expectedType;
     }
+
     @Override
-    public List<T> getWhitelist() { return whitelist; }
+    public List<T> getWhitelist() {
+        return whitelist;
+    }
+
     @Override
-    public List<T> getBlacklist() { return blacklist; }
+    public List<T> getBlacklist() {
+        return blacklist;
+    }
 
     @Override
     public final List<String> getAutoFill() {
         return getAutoFill(autoFill.stream().flatMap(p -> p.get().stream()).collect(Collectors.toList()));
     }
 
-    protected List<Predicate<T>> getChecks() { return checks; }
+    protected List<Predicate<T>> getChecks() {
+        return checks;
+    }
 
     @Override
     public void addAutoFill(String fillWith) {
         autoFill.add(() -> Collections.singletonList(fillWith));
     }
-    @Override
-    public void addAutoFill(Supplier<List<String>> fillWith) { this.autoFill.add(fillWith); }
 
     @Override
-    public void addToWhitelist(T input) { whitelist.add(input); }
+    public void addAutoFill(Supplier<List<String>> fillWith) {
+        this.autoFill.add(fillWith);
+    }
+
     @Override
-    public void addToWhitelist(Collection<? extends T> input) { whitelist.addAll(input); }
+    public void addToWhitelist(T input) {
+        whitelist.add(input);
+    }
+
     @Override
-    public void addToBlacklist(T input) { blacklist.add(input); }
+    public void addToWhitelist(Collection<? extends T> input) {
+        whitelist.addAll(input);
+    }
+
     @Override
-    public void addToBlacklist(Collection<? extends T> input) { blacklist.addAll(input); }
+    public void addToBlacklist(T input) {
+        blacklist.add(input);
+    }
+
     @Override
-    public void addChecks(Predicate<T> check) { this.checks.add(check); }
+    public void addToBlacklist(Collection<? extends T> input) {
+        blacklist.addAll(input);
+    }
+
+    @Override
+    public void addChecks(Predicate<T> check) {
+        this.checks.add(check);
+    }
 }

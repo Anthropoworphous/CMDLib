@@ -1,7 +1,7 @@
-name: CMDLib
+name: CMDLib-compatibility
 version: '${project.version}'
 main: com.github.anthropoworphous.cmdlib.CMDLib
-api-version: 1.17
+api-version: 1.12 and up?
 prefix: CL
 load: STARTUP
 authors: [ Anthropoworphous ]

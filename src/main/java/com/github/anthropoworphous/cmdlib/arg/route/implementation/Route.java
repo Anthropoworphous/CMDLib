@@ -4,12 +4,14 @@ import com.github.anthropoworphous.cmdlib.arg.route.IRoute;
 import com.github.anthropoworphous.cmdlib.arg.type.ArgType;
 import com.github.anthropoworphous.cmdlib.arg.type.lonetypes.LoneArgType;
 import com.github.anthropoworphous.cmdlib.arg.type.multitypes.MultiValueArgType;
+import javafx.util.Pair;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Route implements IRoute {
     public Route(ArgType<?>... route) {
-        this.route = List.of(route);
+        this.route = Arrays.asList(route);
         decompressedRoute = decompress();
     }
 
@@ -20,19 +22,20 @@ public class Route implements IRoute {
     public List<ArgType<?>> getRoute() {
         return route;
     }
+
     @Override
     public List<LoneArgType<?>> getDecompressedRoute() {
         return decompressedRoute;
     }
 
     @Override
-    public List<Map.Entry<ArgType<?>, Object>> compress(List<Object> values) {
-        List<Map.Entry<ArgType<?>, Object>> result = new ArrayList<>();
+    public List<Pair<ArgType<?>, Object>> compress(List<Object> values) {
+        List<Pair<ArgType<?>, Object>> result = new ArrayList<>();
         int index = 0;
 
         for (ArgType<?> arg : route) {
             if (arg.isMultiValue()) {
-                result.add(Map.entry(
+                result.add(new Pair<>(
                         arg, resolveArgCompression(
                                 (MultiValueArgType<?>) arg,
                                 values.subList(index, values.size())
@@ -41,7 +44,7 @@ public class Route implements IRoute {
                 int extra = ((MultiValueArgType<?>) arg).separate().size();
                 index += extra;
             } else {
-                result.add(Map.entry(arg, values.get(index++)));
+                result.add(new Pair<>(arg, values.get(index++)));
             }
         }
 
@@ -51,7 +54,7 @@ public class Route implements IRoute {
     //helper method
     private List<LoneArgType<?>> decompress() {
         List<LoneArgType<?>> result = new ArrayList<>();
-        for (var c : route) {
+        for (ArgType<?> c : route) {
             result.addAll(extract(c));
         }
         return result;
@@ -62,7 +65,7 @@ public class Route implements IRoute {
                 ((MultiValueArgType<?>) argType).separate()
                         .stream()
                         .flatMap(a -> extract(a).stream())
-                        .toList() :
+                        .collect(Collectors.toList()) :
                 Collections.singletonList((LoneArgType<?>) argType);
     }
 

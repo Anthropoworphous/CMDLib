@@ -3,7 +3,6 @@ package com.github.anthropoworphous.cmdlib.arg.type.multitypes.implementation;
 import com.github.anthropoworphous.cmdlib.arg.type.ArgType;
 import com.github.anthropoworphous.cmdlib.arg.type.implementation.BaseType;
 import com.github.anthropoworphous.cmdlib.arg.type.multitypes.MultiValueArgType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +20,16 @@ public abstract class MultiValueType<T> extends BaseType<T> implements MultiValu
 
 
     public abstract List<ArgType<?>> divideInto();
+
     public abstract Optional<T> combineInto(List<Object> input);
 
     @Override
-    public @NotNull List<T> whitelist() {
+    public List<T> whitelist() {
         return whitelist;
     }
+
     @Override
-    public @NotNull List<T> blacklist() {
+    public List<T> blacklist() {
         return blacklist;
     }
 
@@ -36,14 +37,16 @@ public abstract class MultiValueType<T> extends BaseType<T> implements MultiValu
     public boolean isMultiValue() {
         return true;
     }
+
     @Override
-    public final @NotNull List<ArgType<?>> separate() {
+    public final List<ArgType<?>> separate() {
         List<ArgType<?>> divided = divideInto();
         divided.forEach(d -> d.dividedFrom(this));
         return divided;
     }
+
     @Override
-    public final @NotNull Optional<T> combine(List<Object> input) {
+    public final Optional<T> combine(List<Object> input) {
         if (input.size() != separate().size()) {
             return Optional.empty();
         }

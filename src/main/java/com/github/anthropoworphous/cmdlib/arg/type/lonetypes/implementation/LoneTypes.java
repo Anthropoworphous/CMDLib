@@ -4,7 +4,7 @@ import com.github.anthropoworphous.cmdlib.arg.parser.IArgParser;
 import com.github.anthropoworphous.cmdlib.arg.parser.implementation.ArgParser;
 import com.github.anthropoworphous.cmdlib.arg.type.implementation.BaseType;
 import com.github.anthropoworphous.cmdlib.arg.type.lonetypes.LoneArgType;
-import org.jetbrains.annotations.NotNull;
+
 
 @SuppressWarnings("unused")
 public abstract class LoneTypes<T> extends BaseType<T> implements LoneArgType<T> {
@@ -14,8 +14,10 @@ public abstract class LoneTypes<T> extends BaseType<T> implements LoneArgType<T>
 
     //default override for LoneTypes
     @Override
-    @NotNull
-    public String argTypeToString(T input) { return String.valueOf(input); }
+
+    public String argTypeToString(T input) {
+        return String.valueOf(input);
+    }
 
     @Override
     public boolean isMultiValue() {
@@ -23,5 +25,7 @@ public abstract class LoneTypes<T> extends BaseType<T> implements LoneArgType<T>
     }
 
     @Override
-    public @NotNull IArgParser parser() { return new ArgParser<>(this); }
+    public IArgParser parser() {
+        return new ArgParser<>(this);
+    }
 }

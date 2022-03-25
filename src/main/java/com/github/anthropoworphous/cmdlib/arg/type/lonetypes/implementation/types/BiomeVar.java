@@ -4,7 +4,6 @@ import com.github.anthropoworphous.cmdlib.arg.parser.IArgParser;
 import com.github.anthropoworphous.cmdlib.arg.parser.implementation.ArgParser;
 import com.github.anthropoworphous.cmdlib.arg.type.lonetypes.implementation.LoneTypes;
 import org.bukkit.block.Biome;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,7 +15,7 @@ public class BiomeVar extends LoneTypes<Biome> {
     }
 
     @Override
-    @NotNull
+
     public Optional<Biome> stringToArgType(String input) {
         return Stream.of(Biome.values())
                 .filter(b -> b.name().equalsIgnoreCase(input))
@@ -24,12 +23,12 @@ public class BiomeVar extends LoneTypes<Biome> {
     }
 
     @Override
-    public @NotNull String argTypeToString(Biome input) {
+    public String argTypeToString(Biome input) {
         return input.name();
     }
 
     @Override
-    @NotNull
+
     public IArgParser<Biome> parser() {
         return new ArgParser<>(this,
                 () -> Stream.of(Biome.values())

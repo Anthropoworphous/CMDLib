@@ -1,7 +1,6 @@
 package com.github.anthropoworphous.cmdlib.arg.type.lonetypes.implementation.types;
 
 import com.github.anthropoworphous.cmdlib.arg.type.lonetypes.implementation.LoneTypes;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -11,7 +10,7 @@ public class DoubleVar extends LoneTypes<Double> {
     }
 
     @Override
-    public @NotNull Optional<Double> stringToArgType(String input) {
+    public Optional<Double> stringToArgType(String input) {
         return Optional.of(input).map(Double::parseDouble);
     }
 }

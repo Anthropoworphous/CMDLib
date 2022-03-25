@@ -1,6 +1,5 @@
 package com.github.anthropoworphous.cmdlib.arg.type;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,12 +7,15 @@ import java.util.Optional;
 public interface ArgType<T> {
     boolean isMultiValue();
 
-    @NotNull String readableName();
-    @NotNull String readableDescription();
+    String readableName();
 
-    @NotNull List<T> whitelist();
-    @NotNull List<T> blacklist();
+    String readableDescription();
 
-    @NotNull Optional<ArgType<?>> dividedFrom();
+    List<T> whitelist();
+
+    List<T> blacklist();
+
+    Optional<ArgType<?>> dividedFrom();
+
     void dividedFrom(ArgType<?> source);
 }

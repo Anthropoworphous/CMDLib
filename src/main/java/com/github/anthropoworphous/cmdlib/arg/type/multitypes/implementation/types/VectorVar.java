@@ -4,8 +4,8 @@ import com.github.anthropoworphous.cmdlib.arg.type.ArgType;
 import com.github.anthropoworphous.cmdlib.arg.type.lonetypes.implementation.types.DoubleVar;
 import com.github.anthropoworphous.cmdlib.arg.type.multitypes.implementation.MultiValueType;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +15,7 @@ public class VectorVar extends MultiValueType<Vector> {
     }
 
     @Override
-    public @NotNull Optional<Vector> combineInto(List<Object> input) {
+    public Optional<Vector> combineInto(List<Object> input) {
         return Optional.of(
                 new Vector(
                         (Double) input.get(0),
@@ -27,7 +27,7 @@ public class VectorVar extends MultiValueType<Vector> {
 
     @Override
     public List<ArgType<?>> divideInto() {
-        return List.of(
+        return Arrays.asList(
                 new DoubleVar(),
                 new DoubleVar(),
                 new DoubleVar()

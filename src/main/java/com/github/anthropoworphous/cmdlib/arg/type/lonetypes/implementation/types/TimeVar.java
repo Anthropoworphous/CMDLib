@@ -3,7 +3,6 @@ package com.github.anthropoworphous.cmdlib.arg.type.lonetypes.implementation.typ
 import com.github.anthropoworphous.cmdlib.arg.parser.IArgParser;
 import com.github.anthropoworphous.cmdlib.arg.parser.implementation.ArgParser;
 import com.github.anthropoworphous.cmdlib.arg.type.lonetypes.implementation.LoneTypes;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -19,7 +18,7 @@ public class TimeVar extends LoneTypes<Long> {
     }
 
     @Override
-    public @NotNull Optional<Long> stringToArgType(String input) {
+    public Optional<Long> stringToArgType(String input) {
         Matcher match = Pattern.compile("(\\d+\\.?\\d*)\\s?([A-z]+)").matcher(input);
 
         if (match.find()) {
@@ -34,10 +33,10 @@ public class TimeVar extends LoneTypes<Long> {
     }
 
     @Override
-    public @NotNull String argTypeToString(Long input) {
+    public String argTypeToString(Long input) {
         double tick = input;
         String[] unit = {"t", "s", "m", "h", "days", "weeks", "months", "years"};
-        long[] unitLength = { 1, 20, 1200, 72000, 1728000, 12096000, 362880000, 4354560000L};
+        long[] unitLength = {1, 20, 1200, 72000, 1728000, 12096000, 362880000, 4354560000L};
         for (int i = 0; i < unit.length; i++) {
             if (tick / unitLength[i] <= 1000) {
                 return Math.round(tick / unitLength[i] * 100) / 100.0 + unit[i];
@@ -47,7 +46,7 @@ public class TimeVar extends LoneTypes<Long> {
     }
 
     @Override
-    @NotNull
+
     public IArgParser<Long> parser() {
         return new ArgParser<>(this);
     }

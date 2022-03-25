@@ -1,7 +1,6 @@
 package com.github.anthropoworphous.cmdlib.arg.type.implementation;
 
 import com.github.anthropoworphous.cmdlib.arg.type.ArgType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -16,14 +15,13 @@ public abstract class BaseType<T> implements ArgType<T> {
     private ArgType<?> dividedFrom = null;
 
 
-
-
     @Override
-    public @NotNull String readableName() {
+    public String readableName() {
         return readableName;
     }
+
     @Override
-    public @NotNull String readableDescription() {
+    public String readableDescription() {
         return readableDescription;
     }
 
@@ -31,8 +29,9 @@ public abstract class BaseType<T> implements ArgType<T> {
     public void dividedFrom(ArgType<?> source) {
         dividedFrom = source;
     }
+
     @Override
-    public @NotNull Optional<ArgType<?>> dividedFrom() {
+    public Optional<ArgType<?>> dividedFrom() {
         return Optional.ofNullable(dividedFrom);
     }
 }

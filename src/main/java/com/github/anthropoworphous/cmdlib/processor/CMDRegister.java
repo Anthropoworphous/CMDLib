@@ -3,7 +3,8 @@ package com.github.anthropoworphous.cmdlib.processor;
 import com.github.anthropoworphous.cmdlib.cmd.ICMD;
 import com.github.anthropoworphous.cmdlib.cmd.annotation.Command;
 import org.bukkit.Bukkit;
-import org.bukkit.command.*;
+import org.bukkit.command.CommandMap;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,6 +43,7 @@ public class CMDRegister {
             }
         });
     }
+
     public static void registerCMD(ICMD unregisteredICMD, JavaPlugin plugin) {
         PluginCommand cmd = Objects.requireNonNull(createCommand(unregisteredICMD.cmdName(), plugin));
         cmd.setDescription(unregisteredICMD.cmdDescription());
@@ -49,7 +51,9 @@ public class CMDRegister {
         if (unregisteredICMD.cmdAliases() != null) {
             cmd.setAliases(Objects.requireNonNull(unregisteredICMD.cmdAliases()));
         }
-        if (unregisteredICMD.cmdReqPerm() != null) { cmd.setPermission(unregisteredICMD.cmdReqPerm()); }
+        if (unregisteredICMD.cmdReqPerm() != null) {
+            cmd.setPermission(unregisteredICMD.cmdReqPerm());
+        }
         registeredCMD.put(unregisteredICMD.cmdName(), unregisteredICMD);
         Objects.requireNonNull(getCommandMap()).register(plugin.getName(), cmd);
         Objects.requireNonNull(plugin.getCommand(cmd.getName())).setExecutor(CMDExecutor.getExecutor());
@@ -57,7 +61,10 @@ public class CMDRegister {
 
         log("Command " + unregisteredICMD.cmdName() + " registered");
     }
-    public static ICMD getCMD(String name) { return registeredCMD.get(name); }
+
+    public static ICMD getCMD(String name) {
+        return registeredCMD.get(name);
+    }
 
     private static PluginCommand createCommand(String name, JavaPlugin plugin) {
         PluginCommand command = null;

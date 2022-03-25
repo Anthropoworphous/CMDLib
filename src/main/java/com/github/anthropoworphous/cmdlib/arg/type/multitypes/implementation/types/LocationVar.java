@@ -6,8 +6,8 @@ import com.github.anthropoworphous.cmdlib.arg.type.lonetypes.implementation.type
 import com.github.anthropoworphous.cmdlib.arg.type.multitypes.implementation.MultiValueType;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +17,7 @@ public class LocationVar extends MultiValueType<Location> {
     }
 
     @Override
-    public @NotNull Optional<Location> combineInto(List<Object> input) {
+    public Optional<Location> combineInto(List<Object> input) {
         return Optional.of(
                 new Location(
                         (World) input.get(0),
@@ -30,7 +30,7 @@ public class LocationVar extends MultiValueType<Location> {
 
     @Override
     public List<ArgType<?>> divideInto() {
-        return List.of(
+        return Arrays.asList(
                 new WorldVar(),
                 new DoubleVar(),
                 new DoubleVar(),

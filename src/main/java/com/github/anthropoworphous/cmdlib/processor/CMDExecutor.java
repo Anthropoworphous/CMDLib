@@ -5,7 +5,6 @@ import com.github.anthropoworphous.cmdlib.cmd.ICMD;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -17,13 +16,14 @@ public class CMDExecutor implements CommandExecutor {
         }
         return executor;
     }
+
     private static CommandExecutor executor = null;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender s,
-                             @NotNull Command cmd,
-                             @NotNull String label,
-                             @NotNull String[] strArgs) {
+    public boolean onCommand(CommandSender s,
+                             Command cmd,
+                             String label,
+                             String[] strArgs) {
         ICMD c = CMDRegister.getCMD(cmd.getName()); //get command
 
         ArgsAnalyst analyst;

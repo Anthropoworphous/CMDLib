@@ -4,10 +4,10 @@ import com.github.anthropoworphous.cmdlib.arg.analyst.ArgsAnalyst;
 import com.github.anthropoworphous.cmdlib.arg.parser.IArgParser;
 import com.github.anthropoworphous.cmdlib.arg.route.IRoute;
 import com.github.anthropoworphous.cmdlib.arg.type.ArgType;
+import javafx.util.Pair;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Analyst implements ArgsAnalyst {
@@ -20,7 +20,7 @@ public class Analyst implements ArgsAnalyst {
     private List<IRoute> routes;
     private final List<String> input;
     private final boolean valid;
-    private List<Map.Entry<ArgType<?>, Object>> values = null;
+    private List<Pair<ArgType<?>, Object>> values = null;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -72,7 +72,9 @@ public class Analyst implements ArgsAnalyst {
         if (input != null && input.size() != 0) {
             routes = routes.stream()
                     .filter(route -> {
-                        if (route.getDecompressedRoute().size() != input.size()) { return false; }
+                        if (route.getDecompressedRoute().size() != input.size()) {
+                            return false;
+                        }
                         Iterator<String> str = input.iterator();
                         return route.getDecompressedRoute()
                                 .stream()

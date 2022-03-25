@@ -12,18 +12,22 @@ public class ArgParser<T> extends BaseArgParser<T> {
     public ArgParser(LoneArgType<T> expectedType, String... autoFill) {
         super(expectedType, autoFill);
     }
+
     public ArgParser(LoneArgType<T> expectedType, List<String> autoFill) {
         super(expectedType, autoFill);
     }
+
     public ArgParser(LoneArgType<T> expectedType, Supplier<List<String>> autoFill) {
         super(expectedType, autoFill);
     }
+
     public ArgParser(LoneArgType<T> expectedType) {
         super(expectedType);
     }
 
     /**
      * make sure the user input fit the limits
+     *
      * @param input the arg this limiter limit
      * @throws IllegalArgumentException throw if input is illegal in any way
      */
@@ -33,7 +37,9 @@ public class ArgParser<T> extends BaseArgParser<T> {
         T value;
 
         //null input
-        if (input == null) {  throw new IllegalArgumentException("Null input"); }
+        if (input == null) {
+            throw new IllegalArgumentException("Null input");
+        }
 
         //failed to phrase
         value = expectedType.stringToArgType(input).orElseThrow(() ->

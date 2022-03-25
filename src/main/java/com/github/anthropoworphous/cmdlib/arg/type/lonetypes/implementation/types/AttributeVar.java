@@ -4,7 +4,6 @@ import com.github.anthropoworphous.cmdlib.arg.parser.IArgParser;
 import com.github.anthropoworphous.cmdlib.arg.parser.implementation.ArgParser;
 import com.github.anthropoworphous.cmdlib.arg.type.lonetypes.implementation.LoneTypes;
 import org.bukkit.attribute.Attribute;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,7 +15,7 @@ public class AttributeVar extends LoneTypes<Attribute> {
     }
 
     @Override
-    @NotNull
+
     public Optional<Attribute> stringToArgType(String input) {
         return Stream.of(Attribute.values())
                 .filter(att -> att.name().equalsIgnoreCase(input))
@@ -24,12 +23,12 @@ public class AttributeVar extends LoneTypes<Attribute> {
     }
 
     @Override
-    public @NotNull String argTypeToString(Attribute input) {
+    public String argTypeToString(Attribute input) {
         return input.name();
     }
 
     @Override
-    @NotNull
+
     public IArgParser<Attribute> parser() {
         return new ArgParser<>(this,
                 () -> Stream.of(Attribute.values())

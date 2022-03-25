@@ -6,10 +6,14 @@ import java.util.List;
 
 public interface IArgParser<T> extends ModifiableParser<T> {
     boolean validation(String input);
+
     T parse(String input);
+
     ArgType<T> getArgType();
 
     List<String> getAutoFill();
+
     List<T> getWhitelist();
+
     List<T> getBlacklist();
 }
