@@ -10,6 +10,6 @@ Don't have a repo, slap the file in your local repo yourself
 <dependency>
     <groupId>com.github.anthropoworphous</groupId>
     <artifactId>CommandLib</artifactId>
-    <version>1.17-4.1.1</version>
+    <version>5.1.0</version>
 </dependency>
 ```
