@@ -23,8 +23,8 @@ public interface LoneArgType<T> extends ArgType<T> {
         return this;
     }
     /**
-     * Get the parser of this argType instance
-     * You can edit the parser from this, it'll have an effect
+     * Get the parser of this argType instance,
+     * You can edit the parser from this
      * @return The parser
      */
     @NotNull IArgParser<T> parser();

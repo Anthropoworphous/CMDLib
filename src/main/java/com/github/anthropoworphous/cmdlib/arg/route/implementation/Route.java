@@ -26,22 +26,17 @@ public class Route implements IRoute {
     }
 
     @Override
-    public List<Map.Entry<ArgType<?>, Object>> compress(List<Object> values) {
-        List<Map.Entry<ArgType<?>, Object>> result = new ArrayList<>();
+    public List<Object> compress(List<Object> values) {
+        List<Object> result = new ArrayList<>();
         int index = 0;
 
         for (ArgType<?> arg : route) {
             if (arg.isMultiValue()) {
-                result.add(Map.entry(
-                        arg, resolveArgCompression(
-                                (MultiValueArgType<?>) arg,
-                                values.subList(index, values.size())
-                        )
-                ));
+                result.add(resolveArgCompression((MultiValueArgType<?>) arg, values.subList(index, values.size())));
                 int extra = ((MultiValueArgType<?>) arg).separate().size();
                 index += extra;
             } else {
-                result.add(Map.entry(arg, values.get(index++)));
+                result.add(values.get(index++));
             }
         }
 

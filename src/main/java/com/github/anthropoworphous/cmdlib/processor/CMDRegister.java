@@ -43,9 +43,9 @@ public class CMDRegister {
         });
     }
     public static void registerCMD(ICMD unregisteredICMD, JavaPlugin plugin) {
-        PluginCommand cmd = Objects.requireNonNull(createCommand(unregisteredICMD.cmdName(), plugin));
+        PluginCommand cmd = createCommand(unregisteredICMD.cmdName(), plugin);
         cmd.setDescription(unregisteredICMD.cmdDescription());
-        cmd.setUsage(unregisteredICMD.cmdUsage());
+        cmd.setUsage("You shouldn't see this");
         if (unregisteredICMD.cmdAliases() != null) {
             cmd.setAliases(Objects.requireNonNull(unregisteredICMD.cmdAliases()));
         }
@@ -55,7 +55,7 @@ public class CMDRegister {
         Objects.requireNonNull(plugin.getCommand(cmd.getName())).setExecutor(CMDExecutor.getExecutor());
         Objects.requireNonNull(plugin.getCommand(cmd.getName())).setTabCompleter(new CMDCompleter());
 
-        log("Command " + unregisteredICMD.cmdName() + " registered");
+        log("[CMDLib]: Command " + unregisteredICMD.cmdName() + " registered");
     }
     public static ICMD getCMD(String name) { return registeredCMD.get(name); }
 
@@ -66,8 +66,7 @@ public class CMDRegister {
             c.setAccessible(true);
 
             command = c.newInstance(name, plugin);
-        } catch (NoSuchMethodException | InvocationTargetException |
-                InstantiationException | IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return command;
@@ -81,7 +80,7 @@ public class CMDRegister {
 
                 return (CommandMap) f.get(Bukkit.getPluginManager());
             }
-        } catch (NoSuchFieldException | IllegalAccessException | SecurityException | IllegalArgumentException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

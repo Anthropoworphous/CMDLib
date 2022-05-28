@@ -3,6 +3,7 @@ package com.github.anthropoworphous.cmdlib.cmd.implementation;
 import com.github.anthropoworphous.cmdlib.arg.type.ArgType;
 import com.github.anthropoworphous.cmdlib.cmd.ICMD;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,26 +15,26 @@ public abstract class CMD implements ICMD {
     }
 
     @Override
-    public String cmdUsage() {
-        StringBuilder sb = new StringBuilder();
+    public List<String> cmdUsage() {
+        List<String> usages = new ArrayList<>();
+
         if (cmdRoutes() == null || Objects.requireNonNull(cmdRoutes()).size() == 0) {
-            return (sb.append(" - /").append(cmdName())).toString();
-        } else {
-            Objects.requireNonNull(cmdRoutes()).forEach(route -> {
-                sb.append(" - /").append(cmdName());
-                route.getRoute().forEach(argType ->
-                        sb.append(" ").append(argType.readableName())
-                );
-                for (ArgType<?> argType : route.getRoute()) {
-                    sb.append(" \tDef - ").append(argType.readableDescription())
-                            .append("  \tYes - ").append(argType.whitelist())
-                            .append("  \tNah - ").append(argType.blacklist())
-                            .append("  \tConsider - ");
-                }
-                sb.append("\n");
-            });
-            return sb.toString();
+            usages.add(" - /" + cmdName());
+            return usages;
         }
+
+        Objects.requireNonNull(cmdRoutes()).forEach(route -> {
+            usages.add(" - /" + cmdName());
+            route.getRoute().forEach(argType ->
+                    usages.add(" " + argType.readableName())
+            );
+            for (ArgType<?> argType : route.getRoute()) {
+                usages.add("    Def - " + argType.readableDescription());
+                usages.add("    Yes - " + argType.whitelist());
+                usages.add("    Nah - " + argType.blacklist());
+            }
+        });
+        return usages;
     }
 
     @Override

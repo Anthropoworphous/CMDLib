@@ -3,11 +3,9 @@ package com.github.anthropoworphous.cmdlib.arg.analyst.implementation;
 import com.github.anthropoworphous.cmdlib.arg.analyst.ArgsAnalyst;
 import com.github.anthropoworphous.cmdlib.arg.parser.IArgParser;
 import com.github.anthropoworphous.cmdlib.arg.route.IRoute;
-import com.github.anthropoworphous.cmdlib.arg.type.ArgType;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Analyst implements ArgsAnalyst {
@@ -20,7 +18,7 @@ public class Analyst implements ArgsAnalyst {
     private List<IRoute> routes;
     private final List<String> input;
     private final boolean valid;
-    private List<Map.Entry<ArgType<?>, Object>> values = null;
+    private List<Object> values = null;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -28,7 +26,7 @@ public class Analyst implements ArgsAnalyst {
         T result = null;
 
         try {
-            result = (T) values.get(index).getValue();
+            result = (T) values.get(index);
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
@@ -89,12 +87,9 @@ public class Analyst implements ArgsAnalyst {
 
     private void mapValue(IRoute route) {
         Iterator<String> it = input.iterator();
-        values = route.compress(route.getDecompressedRoute()
-                .stream()
-                .map(arg -> ((IArgParser<?>) arg.parser())
-                        .parse(it.next())
-                )
-                .collect(Collectors.toList())
+        values = route.compress(route.getDecompressedRoute().stream()
+                .map(arg -> (Object) ((IArgParser<?>) arg.parser()).parse(it.next()))
+                .toList()
         );
     }
 }

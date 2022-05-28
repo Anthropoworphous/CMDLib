@@ -26,13 +26,14 @@ public class CMDExecutor implements CommandExecutor {
                              @NotNull String[] strArgs) {
         ICMD c = CMDRegister.getCMD(cmd.getName()); //get command
 
-        ArgsAnalyst analyst;
         try {
-            analyst = ArgsAnalyst.of(Arrays.asList(strArgs), c.cmdRoutes()); //input, route
-            return (analyst.valid()) ? c.execute(s, analyst) : false;
+            ArgsAnalyst analyst = ArgsAnalyst.of(Arrays.asList(strArgs), c.cmdRoutes()); //input, route
+            if (!analyst.valid() || !c.execute(s, analyst)) {
+                c.cmdUsage().forEach(s::sendMessage);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return true;
     }
 }

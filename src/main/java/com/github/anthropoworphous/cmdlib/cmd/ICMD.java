@@ -26,7 +26,7 @@ public interface ICMD {
     @Nullable List<IRoute> cmdRoutes();
     @NotNull String cmdName();
     String cmdDescription();
-    String cmdUsage();
+    List<String> cmdUsage();
     String cmdReqPerm();
     @Nullable List<String> cmdAliases();
 }
