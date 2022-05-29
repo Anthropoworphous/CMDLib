@@ -9,7 +9,7 @@ Don't have a repo, slap the file in your local repo yourself
 ```xml
 <dependency>
     <groupId>com.github.anthropoworphous</groupId>
-    <artifactId>CommandLib</artifactId>
-    <version>5.1.0</version>
+    <artifactId>CMDLib</artifactId>
+    <version>6.0.0</version>
 </dependency>
 ```
