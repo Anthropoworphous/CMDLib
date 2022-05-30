@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 public class AdditionsTest {
     @Test
@@ -27,12 +26,8 @@ public class AdditionsTest {
         System.out.println("passed blacklist");
 
         // AutoComplete
-        Var<String> var3 = new StringVar().additional(new AutoComplete<>(input ->
-                Stream.of("aaa", "bbb", "ccc")
-                        .filter(str -> str.startsWith(input))
-                        .toList()
-        ));
-        var list = var3.autoComplete("a");
+        Var<String> var3 = new StringVar().additional(new AutoComplete<>(() -> List.of("aaa", "bbb", "ccc")));
+        List<String> list = var3.getAutoComplete("a").toList();
         assert list.size() == 1;
         assert list.get(0).equals("aaa");
 
