@@ -12,4 +12,9 @@ public class WorldVar extends Var<World> {
     public World convert(List<String> input) throws IllegalArgumentException {
         return Optional.ofNullable(Bukkit.getWorld(input.get(0))).orElseThrow(IllegalArgumentException::new);
     }
+
+    @Override
+    public List<String> autoComplete() {
+        return Bukkit.getWorlds().stream().map(World::getName).toList();
+    }
 }

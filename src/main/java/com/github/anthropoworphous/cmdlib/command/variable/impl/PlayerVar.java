@@ -15,7 +15,7 @@ public class PlayerVar extends Var<Player> {
     }
 
     @Override
-    public List<String> autoComplete(String input) {
+    public List<String> autoComplete() {
         return Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).toList();
     }
 }
