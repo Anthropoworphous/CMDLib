@@ -2,11 +2,10 @@ package com.github.anthropoworphous.cmdlib.command;
 
 import com.github.anthropoworphous.cmdlib.command.variable.Var;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Stream;
 
 public interface CMD {
     List<Route> routes();
@@ -24,8 +23,13 @@ public interface CMD {
         return Optional.empty();
     }
 
-    default Optional<Route> varify(String input) {
+    default Optional<Route> getOneMatchedRoute(String[] input) {
         return routes().stream().filter(route -> route.process(input)).findFirst();
+    }
+    default Stream<? extends Var<?>> getAutoComplete(String[] input) {
+        return routes().stream()
+                .map(route -> route.completionCheck(input))
+                .filter(Objects::nonNull);
     }
 
     class Route {
@@ -43,7 +47,7 @@ public interface CMD {
             this.variables = variables;
         }
 
-        private boolean process(String in) {
+        private boolean process(String[] in) {
             Var.Input input = new Var.Input(in);
             if (input.size() != Arrays.stream(variables).mapToInt(Var::size).sum()) { return false; }
             try {
@@ -53,6 +57,20 @@ public interface CMD {
                 return true;
             } catch (Exception e) {
                 return false;
+            }
+        }
+
+        private @Nullable Var<?> completionCheck(String[] in) {
+            Var.Input input = new Var.Input(in);
+            if (input.size() > Arrays.stream(variables).mapToInt(Var::size).sum()) { return null; }
+            try {
+                int cap = in.length-1; // omit last string (incomplete)
+                for (int i = 0; i < cap; i++) {
+                    variables[i].get(input);
+                }
+                return variables[cap];
+            } catch (Exception e) {
+                return null;
             }
         }
 
