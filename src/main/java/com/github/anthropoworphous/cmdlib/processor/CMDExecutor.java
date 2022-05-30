@@ -1,13 +1,10 @@
 package com.github.anthropoworphous.cmdlib.processor;
 
-import com.github.anthropoworphous.cmdlib.arg.analyst.ArgsAnalyst;
-import com.github.anthropoworphous.cmdlib.cmd.ICMD;
+import com.github.anthropoworphous.cmdlib.command.CMD;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
 
 
 public class CMDExecutor implements CommandExecutor {
@@ -24,15 +21,19 @@ public class CMDExecutor implements CommandExecutor {
                              @NotNull Command cmd,
                              @NotNull String label,
                              @NotNull String[] strArgs) {
-        ICMD c = CMDRegister.getCMD(cmd.getName()); //get command
+        CMD c = CMDRegister.getCMD(cmd.getName()); //get command
 
         try {
-            ArgsAnalyst analyst = ArgsAnalyst.of(Arrays.asList(strArgs), c.cmdRoutes()); //input, route
-            if (!analyst.valid() || !c.execute(s, analyst)) {
-                c.cmdUsage().forEach(s::sendMessage);
-            }
+            c.getOneMatchedRoute(strArgs).ifPresentOrElse(
+                    route -> route.execute(s),
+                    () -> c.usage().ifPresentOrElse(
+                            usage -> usage.forEach(s::sendMessage),
+                            () -> s.sendMessage("No command usage provided- wait how?")
+                    )
+            );
         } catch (Exception e) {
             e.printStackTrace();
+            s.sendMessage("encountered error [%s] while executing the command".formatted(e.getMessage()));
         }
         return true;
     }
