@@ -21,7 +21,7 @@ public class VarFacade<T> extends Var<T> {
         return var.size();
     }
     @Override
-    public List<String> autoComplete(String input) {
-        return var.autoComplete(input);
+    public List<String> autoComplete() {
+        return var.autoComplete();
     }
 }
