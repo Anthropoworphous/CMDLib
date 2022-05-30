@@ -1,6 +1,6 @@
 import com.github.anthropoworphous.cmdlib.command.CMD;
 import com.github.anthropoworphous.cmdlib.command.variable.addition.impl.AutoComplete;
-import com.github.anthropoworphous.cmdlib.command.variable.impl.StringVar;
+import com.github.anthropoworphous.cmdlib.command.variable.single.StringVar;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

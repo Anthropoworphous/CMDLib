@@ -1,4 +1,4 @@
-package com.github.anthropoworphous.cmdlib.command.variable.impl;
+package com.github.anthropoworphous.cmdlib.command.variable.single;
 
 import com.github.anthropoworphous.cmdlib.command.variable.Var;
 
