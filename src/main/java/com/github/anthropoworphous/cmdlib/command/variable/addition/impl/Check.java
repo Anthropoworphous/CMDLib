@@ -7,11 +7,11 @@ import com.github.anthropoworphous.cmdlib.command.variable.addition.VarFacade;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class Whitelist<T> extends Addition<T> {
-    private final Supplier<List<T>> whitelist;
+public class Check<T> extends Addition<T> {
+    private final Supplier<Boolean> check;
 
-    public Whitelist(Supplier<List<T>> whitelist) {
-        this.whitelist = whitelist;
+    public Check(Supplier<Boolean> check) {
+        this.check = check;
     }
 
     @Override
@@ -20,7 +20,7 @@ public class Whitelist<T> extends Addition<T> {
             @Override
             public T convert(List<String> input) throws IllegalArgumentException {
                 T result = var.convert(input);
-                if (!whitelist.get().contains(result)) { throw new IllegalArgumentException(); }
+                if (!check.get()) { throw new IllegalArgumentException(); }
                 return result;
             }
         };

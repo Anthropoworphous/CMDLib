@@ -95,5 +95,12 @@ public interface CMD {
         public static List<Route> of(Route... routes) {
             return List.of(routes);
         }
+        public static List<Route> single(Route.Executor executor, Var<?>... variables) {
+            return List.of(new Route(executor, variables));
+        }
+        public static List<Route> singleNoArg(Route.Executor executor) {
+            return single(executor);
+        }
+
     }
 }

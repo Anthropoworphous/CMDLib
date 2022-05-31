@@ -25,9 +25,13 @@ public class CMDExecutor implements CommandExecutor {
 
         try {
             c.getOneMatchedRoute(strArgs).ifPresentOrElse(
-                    route -> route.execute(s),
+                    route -> {
+                        if (!route.execute(s)) {
+                            printUsage(c, s);
+                        }
+                    },
                     () -> c.usage().ifPresentOrElse(
-                            usage -> usage.forEach(s::sendMessage),
+                            usage -> printUsage(c, s),
                             () -> s.sendMessage("No command usage provided- wait how?")
                     )
             );
@@ -36,5 +40,9 @@ public class CMDExecutor implements CommandExecutor {
             s.sendMessage("encountered error [%s] while executing the command".formatted(e.getMessage()));
         }
         return true;
+    }
+
+    private static void printUsage(CMD c, CommandSender s) {
+        c.usage().ifPresent(list -> list.forEach(s::sendMessage));
     }
 }
