@@ -1,5 +1,6 @@
 package com.github.anthropoworphous.cmdlib.command.variable.multi;
 
+import com.github.anthropoworphous.cmdlib.command.variable.MultiVar;
 import com.github.anthropoworphous.cmdlib.command.variable.single.DoubleVar;
 import org.bukkit.util.Vector;
 

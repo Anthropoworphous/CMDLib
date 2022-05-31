@@ -1,6 +1,4 @@
-package com.github.anthropoworphous.cmdlib.command.variable.multi;
-
-import com.github.anthropoworphous.cmdlib.command.variable.Var;
+package com.github.anthropoworphous.cmdlib.command.variable;
 
 import java.util.Arrays;
 import java.util.List;
