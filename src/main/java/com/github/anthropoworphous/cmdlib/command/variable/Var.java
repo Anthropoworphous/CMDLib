@@ -40,6 +40,9 @@ public abstract class Var<T> {
         public Input(String... input) {
             this.input = List.of(input);
         }
+        public Input(List<String> input) {
+            this.input = input;
+        }
 
         public int size() { return input.size(); }
         public List<String> slice(int amount) throws IndexOutOfBoundsException {
