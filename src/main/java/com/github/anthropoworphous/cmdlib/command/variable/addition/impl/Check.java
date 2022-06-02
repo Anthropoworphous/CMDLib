@@ -5,12 +5,12 @@ import com.github.anthropoworphous.cmdlib.command.variable.addition.Addition;
 import com.github.anthropoworphous.cmdlib.command.variable.addition.VarFacade;
 
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.function.Predicate;
 
 public class Check<T> extends Addition<T> {
-    private final Supplier<Boolean> check;
+    private final Predicate<T> check;
 
-    public Check(Supplier<Boolean> check) {
+    public Check(Predicate<T> check) {
         this.check = check;
     }
 
@@ -20,7 +20,7 @@ public class Check<T> extends Addition<T> {
             @Override
             public T convert(List<String> input) throws IllegalArgumentException {
                 T result = var.convert(input);
-                if (!check.get()) { throw new IllegalArgumentException(); }
+                if (!check.test(result)) { throw new IllegalArgumentException(); }
                 return result;
             }
         };
