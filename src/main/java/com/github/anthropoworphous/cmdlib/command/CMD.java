@@ -51,6 +51,7 @@ public interface CMD {
             Var.Input input = new Var.Input(in);
             if (input.size() != Arrays.stream(variables).mapToInt(Var::size).sum()) { return false; }
             try {
+                processedInput.clear();
                 for (Var<?> var : variables) {
                     processedInput.add(var.get(input));
                 }
@@ -101,6 +102,5 @@ public interface CMD {
         public static List<Route> singleNoArg(Route.Executor executor) {
             return single(executor);
         }
-
     }
 }
